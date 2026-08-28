@@ -2,9 +2,9 @@
 
 _This project is to be done in teams of 2._
 
-**NAME OF BOTH COLLABORATOR(S) HERE**
+**COLLABORATORS:** Matthias Corkran, Xie Li
 
-**THE MASTERWORK YOU DREW FROM THE HAT:**
+**THE MASTERWORK YOU DREW FROM THE HAT:** Pepper's Ghost
 
 ---
 
@@ -92,6 +92,69 @@ the interaction*:
 **Describe your masterwork here, in your own words. What is the core interaction
 someone would recognize it by?**
 
+Our masterwork is **Pepper's Ghost**, the illusion John Henry Pepper premiered on
+Christmas Eve 1862 at the Royal Polytechnic Institution on Regent Street, in a
+staging of Charles Dickens' *The Haunted Man and the Ghost's Bargain*. The
+optical trick itself is older — Giambattista della Porta described it in 1589,
+and engineer Henry Dircks built a peepshow version that Pepper saw in 1862 —
+but Pepper's contribution was the piece of stagecraft that made it work for a
+paying audience: an angled sheet of plate glass across the proscenium plus a
+hidden, brightly lit "blue room" below or beside the stage, so that "almost any
+theatre or hall could make the illusion visible to a large audience." Pepper and
+Dircks patented it jointly in 1863. It set off a craze for stage ghosts through
+the 1860s and is still doing the same job today in Disney's Haunted Mansion
+ballroom, in teleprompters, in heads-up displays, and in the 2012 Coachella
+"resurrection" of Tupac Shakur (a Pepper's Ghost, not a hologram, however it was
+marketed).
+
+**How it works.** A large sheet of glass is set at roughly 45° between the
+audience and the stage. The audience looks *through* it at the real set and
+actors and never registers that it is there — the illusion lives or dies on
+hiding the glass, its edges, and any glare. Out of the audience's sightline (a
+pit or a wing, the "blue room") sits a second space dressed identically to the
+corresponding patch of stage. Anything lit in that hidden room is reflected off
+the angled glass and appears to the audience to be standing *on the stage*,
+semi-transparent, sharing space with the solid actors.
+
+**The core interaction is lighting, and it is a genuine input/output loop
+between an operator and the audience's perception.** The ghost is not painted or
+projected — it is a real, three-dimensional person or object whose *visibility
+is dialed by light*:
+
+- **Main stage bright, hidden room dark → no ghost.** The audience sees only the
+  real set.
+- **Bring up the light in the hidden room (often dimming the stage at the same
+  time) → the ghost fades into being**, hanging in the air among the live
+  actors.
+- **Kill the hidden light → the ghost vanishes instantly**, no exit, no trap
+  door.
+
+Ours is a black-background version: for a cheap build (and for the
+1862 original) the reflected figure has to sit in front of something as dark as
+possible, because dark surfaces throw back almost no light and therefore don't
+show up in the reflection. The blackness is what lets the ghost "float" — only
+the lit figure reflects, everything behind it drops out. In our own prototyping
+we leaned hard on this, backing the hidden figure with black construction
+paper and cardboard, which is about the cheapest dark, non-reflective,
+easy-to-shape backdrop you can get.
+
+**What it's famous for.** Economy and control. With no film, no projection, and
+no electronics, an operator can make a solid human being materialize out of
+nothing, turn transparent, and disappear — in real time, on cue, in the middle
+of a lit stage, close enough for a living actor to interact with. Its
+descendants (Haunted Mansion, "hologram" concerts) are famous for exactly the
+same illusion of a departed or impossible figure sharing the stage with the
+living.
+
+**Strengths:** the ghost is truly 3-D and truly present, so it holds up from
+many seats and lets live actors interact with it convincingly; appearance,
+transparency, and disappearance are all instantaneous and perfectly repeatable;
+it needs no special materials. **Weaknesses:** it is extremely sensitive to
+stray light — one reflection off the glass, one lit edge, one bright object
+behind the ghost, and the illusion collapses; it eats stage volume (you need a
+whole hidden room as big as the ghost); the audience has to be roughly
+front-on.
+
 ## Part A. Plan
 
 For your masterwork, reconstruct the interaction as a scene:
@@ -104,6 +167,54 @@ For your masterwork, reconstruct the interaction as a scene:
 - **Goals:** What is each player trying to do?
 
 **Describe your setting, players, activity, and goals here.**
+
+Our recreation is bare-bones on purpose. We keep only the part of Pepper's Ghost
+that makes it what it is — **a figure that appears, hangs half-transparent in
+real space, and vanishes, all controlled by light** — and we stage it at
+tabletop scale with a phone standing in for the hidden lit room.
+
+**Setting.** A lab table, room lights low. The rig is a small open-fronted box
+made of **cardboard lined with black construction paper**. A clear plastic sheet
+(a laser-cut panel from the Cornell Tech Maker Lab) leans inside the box at a
+shallow angle, roughly 45° to the tabletop. An iPhone is propped up on one of the 
+walls, screen towards the "ghost", playing the ghost image; its light bounces
+off the angled sheet so the ghost seems to stand *inside* the black box. The
+viewer looks into the open front of the box from across the table. There is no
+built environment beyond the black box — the darkness is the set, and it is what
+lets the ghost float.
+
+**Players.**
+- **The viewer / spectator** — one person at a time, looking into the box
+  head-on from across the table. They are the whole audience; the illusion is
+  aimed at their single viewpoint. Optionally one of us plays this role "in
+  character" as the haunted man, reacting to the ghost so onlookers read it as
+  alive.
+- **The ghost** — a figure on the phone screen (a simple rendered character /
+  doll). It is never seen directly, only as the reflection in the sheet.
+- **The operator (wizard)** — one of us, out of the viewer's sightline, driving
+  the phone: which image is shown, and how bright the flashlight is. Flashlight
+  brightness *is* the dimmer. Bright light in a dark room = ghost visible;
+  lower it = ghost turns translucent; screen black or look past the plexiglass = 
+  ghost gone. This is the entire control surface.
+- **Onlookers** — anyone else watching the spectator rather than the box. For
+  them the "interaction" is the spectator's face and the ghost appearing on cue.
+
+**Activity.** Room is dark, phone screen is black, the box looks empty. On cue
+the operator **fades the screen up** and the ghost **materializes** in the black
+box. At the end the operator **cuts the screen to black** and the ghost is 
+**instantly gone**, no exit. If a spectator reaches toward the box, there is 
+nothing there and never was.
+
+**Goals.**
+- *The viewer:* to figure out what they're looking at — is something really in
+  the box? — and, ideally, to fail, and to never notice the angled sheet.
+- *The ghost:* (as staged) to be seen, linger, and leave on its own terms — it
+  disappears when the operator chooses, not when the viewer reaches for it.
+- *The operator:* to time the fade-in, the transparency, and the vanish to the
+  viewer's attention — appearing just as they look in, vanishing just as they
+  lean closer — reading the person, not running a fixed loop.
+- *Onlookers:* to be unable to explain the spectator's reaction or where the
+  figure went.
 
 Now **sketch a 3 storyboards** of the interaction you are recreating. (The number may depend on the thing you drew, but stretch your thinking!) They
 don't need to be beautiful, but they must capture and communicate not only the behavior of the light, but how it affects
