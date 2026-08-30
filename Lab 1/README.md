@@ -223,6 +223,8 @@ and the people around it. If you're new to storyboarding, read
 
 **Include pictures of your storyboards here.**
 
+Our three iterated storyboards are in [`storyboard.pdf`](storyboard.pdf).
+
 Use the storyboards to decide what interaction to prototype.
 
 **Summarize the feedback you got here.**
@@ -235,10 +237,16 @@ it aloud.
 
 **Are there things that seemed better on paper than when acted out?**
 
+Yes the prototyping helped us realize how important it was to have the dark background.
+Without the dark background the "ghost" just looks like a bad reflection.
+
 **Did new ideas about the piece surface once you were on your feet?**
 
+Yes we realized that the materials did not need to be super complex, cardboard would do for most of the structure.
+
 **Are there key moments in the interaction where things could go in a different direction?**
-Iterate your storyboards to capture key non-sequential aspects of the interaction. 
+
+Yes I think the biggest point of decision here was how large to make the interaction.
 
 ## Part C. Prototype the Light (light first!)
 
@@ -249,12 +257,20 @@ change that light. Code and setup instructions for the *Tinkerbelle* tool are
 this lab). If you hit technical trouble, a manually or remotely controlled light
 switch, dimmer, or lamp is a fine substitute.
 
+When we met in the lab, we forgot to bring a device that would allow us to "wizard" the light.
+So we intend to have the full wizarding setup ready for part 2.
+
 **Get the light interaction working before anything else.** Your grade this week
 rides on the *light* being recognizable — the color, the rhythm, the timing, the
 way it answers a person. Only once your light interaction genuinely reads as your
 masterwork should you consider layering in a second modality (sound, vibration,
 motion). If in doubt, keep polishing the light. The other modalities are next
 week's business.
+
+**Building the rig.** Assembling the black box, the angled plexiglass sheet, and
+the phone — video: [`building.MOV`](building.MOV)
+
+![Building the Pepper's Ghost rig](building.jpg)
 
 ## Part D. Wizard the Device
 
@@ -264,6 +280,8 @@ building any real electronics. (Zoom works well for recording; you can pin the
 video feed of whichever scene you want to capture.)
 
 **Include your first attempts at recording the wizarded set-up here.**
+
+First wizarded run-through, with one of us acting with it: [`wizard.mov`](wizard.mov)
 
 ## Part E. (optional) Costume the Device
 
@@ -287,9 +305,18 @@ who doesn't should come away understanding what it's famous for. How might you i
 
 **Include your video here.**
 
+Our video sketch of the prototyped interaction:
+[`light-and-interaction.MOV`](light-and-interaction.MOV)
+
+![Still from the final interaction](ahhhh.jpg)
+
 **Please indicate who you collaborated with on this lab.** Be generous in
 acknowledging their contributions, and credit any other influences (YouTube,
 Github, Twitter, a friend who lent you a lamp) that informed your recreation.
+
+https://www.instructables.com/Peppers-Ghost-on-a-Budget-Quick-and-Cheap-Ghost-Il/
+
+^this link here was extremely helpful, as well as the generic Wikipedia page on Pepper's Ghost. 
 
 ---
 
