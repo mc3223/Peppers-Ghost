@@ -332,7 +332,39 @@ guess the masterwork and the goals of the characters, and ask about anything tha
 wasn't clear.
 
 **Who were the other groups you kibitzed with? Add links to their project pages here.**
+
+1. [bydemihu — Lab 1](https://github.com/bydemihu/Interactive-Lab-Hub/tree/Fall2026/Lab%201)
+2. [neeharavula — Lab 1](https://github.com/neeharavula/Interactive-Lab-Hub/tree/Fall2026/Lab%201)
+3. [Elliot-verified — Lab Hub](https://github.com/Elliot-verified/Interactive-Lab-Hub)
+
 **Summarize the feedback you got from your partners here.**
+
+**Group 1 ([bydemihu](https://github.com/bydemihu/Interactive-Lab-Hub/tree/Fall2026/Lab%201)) — "show me the audience, not the device."**
+They liked that we built a working replica out of maker-lab scraps, and found the
+storyboards useful for understanding *how the device works* — but said that was
+the problem: the storyboards read as technical specification rather than
+interaction. What they wanted was the **use**: in an actual performance, how does
+this get set up, and what does the audience experience? They also pushed on the
+viewing-angle limitation specifically — the original can't be seen from every
+seat, and they were curious how the audience contends with that.
+
+**Group 2 ([neeharavula](https://github.com/neeharavula/Interactive-Lab-Hub/tree/Fall2026/Lab%201)) — "we can see the edge of the acrylic, and the room is too bright."**
+They thought we'd genuinely pulled the illusion off and that the ghost image was
+clear, and gave us credit for the amount of setup involved. Their two wishes were
+concrete and physical: **(a)** you can see where the acrylic "glass" ends in the
+video, which breaks the effect, and **(b)** the room should be completely dark to
+see the effect properly.
+
+**Group 3 ([Elliot-verified](https://github.com/Elliot-verified/Interactive-Lab-Hub)) — "more motion, maybe more size."**
+They found the project interesting but wanted more movement in the ghost, and
+possibly a larger scale.
+
+**What we did with it.** Group 2's two notes are, almost word for word, the two
+changes this remaster is built on — see below. Group 1's critique is the sharper
+one and we only partly answered it; we address that honestly in the reflections.
+Group 3's asks (animate the ghost, build it bigger) were the most expensive
+changes on the list, both mean rebuilding the rig rather than relighting it, so
+we did not act on them this round.
 
 ## Remix, Update, or Critique the Master
 
@@ -354,6 +386,151 @@ your response engages with what your master was really doing.
 
 **Document everything here — especially the storyboard and video. Photos of the
 prototype are great too.**
+
+### Our move: fix the weakness, then use the fix to push the strength
+
+We took **move 3**. What made this easy to aim was that our peer feedback and our
+own Part 0 arrived at the same diagnosis independently. In Part 0 we had written
+down what kills this illusion:
+
+> it is extremely sensitive to stray light, one reflection off the glass, one
+> lit edge, one bright object behind the ghost, and the illusion collapses
+
+And Group 2, watching the week-1 video with no knowledge of that sentence, asked
+for exactly those two things: **hide the end of the acrylic**, and **make the room
+completely dark**. Getting our abstract weakness handed back to us as two
+concrete production notes is what turned Part 0 into a to-do list.
+
+They were right. The room lights were up in week 1, so the plexiglass read as a
+visible sheet of plastic sitting on a table, and the "ghost" read as what it
+physically was: a phone screen bouncing off a window. Pepper's problem in 1862
+was never *how do I make a reflection* — it was **how do I make the audience not
+see the glass.** We had recreated the optics and skipped the stagecraft.
+
+So the remaster is four changes, three of them subtractive:
+
+1. **Kill the room.** *(Group 2's second note.)* The whole room goes dark, not
+   just the inside of the box. In week 1 we lit the box's interior black but left
+   the room bright, which is backwards, the glass picks up whatever is on the
+   *audience's* side, so the room the viewer is sitting in has to be the dark one.
+2. **Hide the glass.** *(Group 2's first note.)* We reangled the sheet and moved
+   the camera so that no edge, no glare, and no bright object lands on the pane.
+   In the final video you can only find the plexiglass if you already know it's
+   there — look for the faint vertical seam left of the box.
+3. **Wizard the light for real.** This closes the gap we admitted to in Part C:
+   in week 1 we forgot the device to drive the light, so the "interaction" was
+   really just a static image. Now the operator sits out of frame and drives
+   **brightness and hue** live, the ghost fades up, shifts white → red → amber →
+   green, and fades out on cue. Brightness *is* presence; that dimmer is the
+   entire interface, exactly as it was in 1862.
+4. **Add a real candle as a control.** This is the addition, and it's the part
+   we're proudest of.
+
+**Why the candle.** Once the illusion actually works, it works *too* well — a
+ghost alone in a dark room is just a picture, and the viewer has no way to judge
+whether they're looking at something present or something projected. On a real
+Pepper's Ghost stage that job is done by the **living actors**: the ghost is
+astonishing because it is standing next to a solid person, in the same air, and
+you can see it is not as solid as they are. We had no second actor at tabletop
+scale, so we gave the ghost a **real, physically present, genuinely burning
+candle** to stand in front of.
+
+The candle does three jobs at once:
+
+- It is an **honest object** — undeniably in the room, casting real light on the
+  real table. It anchors the scene as physical.
+- It is a **transparency meter.** You can see the candle jar straight *through*
+  the ghost's body. That's the moment the viewer understands this thing isn't
+  solid.
+- It is the **proof of the vanish.** When the operator takes the ghost away, the
+  candle is still burning in exactly the same spot. Nothing left, nothing moved,
+  no trapdoor, and something that was there the whole time is still there. The
+  ghost's absence is measured against an object that never left.
+
+![The ghost in front of the real candle](remaster.jpg)
+
+**Ghost present vs. ghost gone — same frame, same candle:**
+
+![Ghost present, then only the candle](remaster_comparison.jpg)
+
+On the left, the ghost is up and warm and you can read the candle jar through
+its body. On the right the operator has faded it out and only the real candle
+remains. This side-by-side *is* the piece.
+
+### Storyboard
+
+<!-- TODO: storyboard for the remastered interaction. The brief calls this out
+     explicitly ("especially the storyboard and video"). Suggested three panels,
+     matching the beats below:
+       1. Dark room, candle alone — viewer sees an ordinary table.
+       2. Ghost fades up beside the candle; viewer leans in; candle visible
+          THROUGH the ghost.
+       3. Operator (drawn off to the side, hand on the dimmer) cuts it — ghost
+          gone, candle still burning, viewer's hand reaching into empty air.
+     Draw + photograph, save as remaster_storyboard.pdf or .jpg, then link here
+     the way storyboard.pdf is linked in Part A. -->
+
+### The video
+
+Our remastered interaction: [`remaster.MOV`](remaster.MOV)
+
+Beat sheet — the light is the whole script:
+
+| Time | Light | What the viewer gets |
+|---|---|---|
+| 0:00–0:08 | Room dark, ghost off. Only the candle, dim. | An empty table with a black box and a candle. No reason to suspect a pane of glass. |
+| 0:08–0:22 | Operator fades the ghost **up**; cycles white → pink/red. | A figure is suddenly *there*, beside the candle. Colored spill lands on the tabletop and the box's edge, the ghost appears to light the real room. |
+| 0:24 | (camera pushes in) | Close enough to see through it. |
+| 0:25–0:37 | Ghost holds; hue walks cool white → amber → green. | Full translucency reads: the candle jar is visible through the ghost. It is *sharing space* with a real object, not replacing it. |
+| 0:37–0:38 | Operator cuts the ghost to nothing. | Instant vanish, no exit. The candle is still burning. |
+
+**On the "non-sequential aspects" the brief asks about:** the beats above are the
+order we happened to shoot, but none of it is a sequence the device is playing
+back, there is no timeline, no program, no loop. Every change is a hand on a
+dimmer, live, and the operator can hold the ghost, dim it halfway, or take it
+away at any moment. We tried to show this by **letting the color changes land at
+irregular intervals** and by fading rather than cutting, so the light reads as
+*driven* rather than *scheduled*. The one hard cut, the vanish, is the only
+moment that should feel instantaneous, because that instantaneity is what the
+master is famous for.
+
+### Reflections
+
+- **The fix was mostly removal.** Nothing we added made the illusion better; what
+  made it work was turning things off. Every improvement between week 1 and week
+  2 was about controlling light we did *not* want. That is a real lesson about
+  the master: Pepper's invention was a room, not a lens.
+- **A working illusion needs something honest next to it.** This surprised us.
+  Our first instinct after fixing the glass was to make the ghost brighter and
+  more dramatic, and the result was less convincing, not more, a bright figure
+  in a void is just a screen. The candle, which is the least magical object in
+  the scene, is what makes the ghost read as a ghost. The illusion needs a
+  witness.
+- **Brightness as a verb.** Once the wizarding actually worked, we stopped
+  thinking of the light as "on/off" and started thinking of it as the ghost's
+  *volume*, how present it wants to be right now. Half-brightness is a
+  genuinely different character than full brightness, and there is no way to
+  discover that without a live dimmer in someone's hand.
+- **The critique we didn't fully answer.** Group 1 asked to see the *audience*,
+  not the device, how a performance gets set up, what a spectator actually
+  experiences, and how people deal with the fact that the illusion only works
+  from a narrow range of seats. We took half of this. The candle is our answer to
+  "what does the audience perceive," because it gives the viewer a reference
+  object to measure the ghost against, and the darkened room is what makes the
+  narrow viewing angle survivable, you can't see the pane's edge from an off
+  seat if there's no light on it. But we still have not put a **person** in the
+  frame. Our video is shot from the one good seat and never shows what happens
+  when you walk out of it, which is precisely the limitation Group 1 was asking
+  about. Filming the same 38 seconds from a bad angle, and cutting it against the
+  good one, would answer them directly and would cost us nothing but a second
+  take. That's the first thing we'd shoot next.
+- **What we'd do after that.** Give the ghost a reason to change. Right now the
+  operator reads the viewer, but the viewer can't affect the ghost, the loop is
+  one-way and secret. The obvious next move is to close it: let the ghost dim
+  when someone leans in, or gutter when the real candle is blown at, so the two
+  lights in the scene are talking to each other. Group 3's request for motion
+  points at the same gap from a different side, a ghost that never moves can't
+  respond to anyone.
 
 ---
 
