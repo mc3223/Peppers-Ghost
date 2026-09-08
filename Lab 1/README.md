@@ -459,16 +459,26 @@ remains. This side-by-side *is* the piece.
 
 ### Storyboard
 
-<!-- TODO: storyboard for the remastered interaction. The brief calls this out
-     explicitly ("especially the storyboard and video"). Suggested three panels,
-     matching the beats below:
-       1. Dark room, candle alone — viewer sees an ordinary table.
-       2. Ghost fades up beside the candle; viewer leans in; candle visible
-          THROUGH the ghost.
-       3. Operator (drawn off to the side, hand on the dimmer) cuts it — ghost
-          gone, candle still burning, viewer's hand reaching into empty air.
-     Draw + photograph, save as remaster_storyboard.pdf or .jpg, then link here
-     the way storyboard.pdf is linked in Part A. -->
+The storyboard for the remastered interaction is in
+[`storyboard-remaster.pdf`](storyboard-remaster.pdf). Four pages:
+
+1. **Rig, top view and front view.** Where the angled pane, the background
+   board, the black cardboard box, and the phone acting as the light source all
+   sit relative to the viewer's eye. This is the sheet we actually built from.
+2. **Control path.** Jane Wren on the laptop is the controller, the color and
+   audio cues go out through the cloud, and Tinkerbelle drives the light source
+   at the box. The operator is a node in the diagram, not a stagehand hidden
+   behind it.
+3. **The room.** Dark room, guests standing in front of the table, the ghost in
+   the box, and Jane Wren off to the side at the laptop. This is the panel that
+   answers Group 1's note about showing the audience rather than the device:
+   spectators, operator, and illusion in one frame.
+4. **The three beats.** *Normal* (light off, the box reads as an empty box),
+   *ghost appears* (light up, white to pink/red to yellow, audio in), *ghost
+   disappears* (light off, nothing left behind).
+
+Panel 4 is the interaction proper and maps onto the beat sheet below, audio cue
+included.
 
 ### The video
 
