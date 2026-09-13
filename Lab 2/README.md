@@ -192,7 +192,8 @@ Another might be novel units of time. How do you measure a year? [In daylights? 
 We strongly discourage literal digital or analog clock display: Be creative.
 
 
-** Insert ideas, sketches, [Verplank diagrams](https://ccrma.stanford.edu/courses/250a-fall-2004/IDSketchbok.pdf)), storyboards for your ideas **
+<img width="1728" height="1079" alt="ab94fd1c8b964601933d83186135d6f9" src="https://github.com/user-attachments/assets/767179e5-859a-4131-b435-8459d4bef831" />
+
 
 
 
