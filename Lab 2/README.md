@@ -1,7 +1,6 @@
 # Interactive Prototyping: The Clock of Pi
-**NAMES OF COLLABORATORS HERE**
 
-Matthias Corkran
+Matthias Corkran, Xie Li
 
 Does it feel like time is moving strangely during this semester?
 
@@ -11,6 +10,8 @@ It is worth spending a little time thinking about how you mark time, and what wo
 
 **Please indicate anyone you collaborated with on this Lab here.**
 Be generous in acknowledging their contributions! And also recognizing any other influences (e.g. from YouTube, Github, Twitter) that informed your design. 
+
+We used Claude for tech support essentially.
 
 ## Prep
 
@@ -160,10 +161,19 @@ You can look in `image.py` for an example of how to display an image on the scre
 
 \*\*\***Include a picture of your own Raspberry Pi displaying the piscreen.service with your unique MAC address. Additionally, please provide another picture showing the successful completion of the screen test.**\*\*\*
 
+<p float="left">
+<img src="piscreen_service_mac.jpg" height="300" />
+<img src="screen_test_red.jpg" height="300" />
+</p>
+
 
 ## Part D. 
 ### Set up the Display Clock Demo
 Work on `screen_clock.py`, try to show the time by filling in the while loop (at the bottom of the script where we noted "TODO" for you). You can use the code in `cli_clock.py` and `stats.py` to figure this out.
+
+<img src="screen_clock_demo.jpg" height="300" />
+
+The date and time are pulled with `time.strftime` (same as `cli_clock.py`) and drawn onto the display each loop with `draw.text`, matching the pattern used in `stats.py` for drawing multiple lines of text.
 
 ### How to Edit Scripts on Pi
 Option 1. One of the ways for you to edit scripts on Pi through terminal is using [`nano`](https://linuxize.com/post/how-to-use-nano-text-editor/) command. You can go into the `screen_clock.py` by typing the follow command line:

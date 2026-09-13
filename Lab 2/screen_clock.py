@@ -62,9 +62,15 @@ backlight.value = True
 
 while True:
     # Draw a black filled box to clear the image.
-    draw.rectangle((0, 0, width, height), outline=0, fill=400)
+    draw.rectangle((0, 0, width, height), outline=0, fill=(0, 0, 0))
 
-    #TODO: Lab 2 part D work should be filled in here. You should be able to look in cli_clock.py and stats.py 
+    # Get the current local date and time.
+    current_date = time.strftime("%m/%d/%Y")
+    current_time = time.strftime("%H:%M:%S")
+
+    # Draw the date and time in white.
+    draw.text((10, 30), current_date, font=font, fill=(255, 255, 255))
+    draw.text((10, 65), current_time, font=font, fill=(255, 255, 255))
 
     # Display image.
     disp.image(image, rotation)
