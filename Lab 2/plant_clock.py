@@ -59,8 +59,8 @@ buttonB.switch_to_input(pull=digitalio.Pull.UP)
 # ---------------------------
 
 # The screen is used in landscape orientation
-WIDTH = 240
-HEIGHT = 135
+WIDTH = 135
+HEIGHT = 240
 
 image = Image.new("RGB", (WIDTH, HEIGHT), "black")
 draw = ImageDraw.Draw(image)
