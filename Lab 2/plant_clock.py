@@ -115,7 +115,7 @@ paused = False
 
 # Normal growth speed.
 # Later the light sensor can modify this value.
-growth_speed = 1.0
+growth_speed = 10.0
 
 last_time = time.monotonic()
 
