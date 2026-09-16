@@ -1,8 +1,10 @@
-# growth_clock.py
+# plant_clock.py
 # Raspberry Pi 5 + Adafruit Mini PiTFT 1.14" ST7789
 #
 # Button A (GPIO23) = PAUSE
 # Button B (GPIO24) = RESUME
+#
+# Landscape display: 240 x 135
 
 import time
 import digitalio
@@ -25,6 +27,8 @@ BAUDRATE = 64000000
 
 spi = board.SPI()
 
+# Keep the physical display configuration as 135 x 240.
+# We will rotate the image before sending it to the display.
 display = st7789.ST7789(
     spi,
     cs=cs_pin,
@@ -58,9 +62,9 @@ buttonB.switch_to_input(pull=digitalio.Pull.UP)
 # Screen configuration
 # ---------------------------
 
-# The screen is used in landscape orientation
-WIDTH = 135
-HEIGHT = 240
+# Create the UI in landscape orientation.
+WIDTH = 240
+HEIGHT = 135
 
 image = Image.new("RGB", (WIDTH, HEIGHT), "black")
 draw = ImageDraw.Draw(image)
@@ -102,14 +106,15 @@ except OSError:
 # Growth Clock variables
 # ---------------------------
 
+# Total virtual growth time
 growth_time = 0.0
 
 # False = clock running
 # True = clock paused
 paused = False
 
-# Normal speed
-# Later the light sensor can change this value
+# Normal growth speed.
+# Later the light sensor can modify this value.
 growth_speed = 1.0
 
 last_time = time.monotonic()
@@ -140,6 +145,20 @@ def format_time(seconds):
 
 
 # ---------------------------
+# Send landscape image
+# to physical display
+# ---------------------------
+
+def show_image():
+
+    # The UI is 240 x 135.
+    # The display driver expects 135 x 240.
+    rotated_image = image.rotate(90, expand=True)
+
+    display.image(rotated_image)
+
+
+# ---------------------------
 # Draw the screen
 # ---------------------------
 
@@ -150,6 +169,7 @@ def draw_screen():
         (0, 0, WIDTH, HEIGHT),
         fill="black"
     )
+
 
     # -----------------------
     # Title
@@ -225,14 +245,14 @@ def draw_screen():
     # -----------------------
 
     draw.text(
-        (10, 110),
+        (10, 112),
         "A: PAUSE",
         font=small_font,
         fill="white"
     )
 
     draw.text(
-        (155, 110),
+        (160, 112),
         "B: RESUME",
         font=small_font,
         fill="white"
@@ -243,7 +263,7 @@ def draw_screen():
     # Send image to PiTFT
     # -----------------------
 
-    display.image(image)
+    show_image()
 
 
 # ---------------------------
@@ -254,6 +274,7 @@ print("Growth Clock Started")
 print("Button A (GPIO23): PAUSE")
 print("Button B (GPIO24): RESUME")
 print("Press Ctrl+C to stop the program.")
+
 
 try:
 
@@ -338,9 +359,10 @@ except KeyboardInterrupt:
 
     print("\nGrowth Clock stopped.")
 
+    # Clear the landscape image
     draw.rectangle(
         (0, 0, WIDTH, HEIGHT),
         fill="black"
     )
 
-    display.image(image)
+    show_image()
