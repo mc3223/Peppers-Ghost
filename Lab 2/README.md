@@ -1,6 +1,6 @@
 # Interactive Prototyping: The Clock of Pi
 
-Matthias Corkran, Xie Li
+**Matthias Corkran, Xie Li**
 
 Does it feel like time is moving strangely during this semester?
 
@@ -160,6 +160,12 @@ You can look in `screen_boot_script.py` for how to display text on the screen!
 You can look in `image.py` for an example of how to display an image on the screen. Can you make it switch to another image when you push one of the buttons?
 
 \*\*\***Include a picture of your own Raspberry Pi displaying the piscreen.service with your unique MAC address. Additionally, please provide another picture showing the successful completion of the screen test.**\*\*\*
+<img width="1702" height="1276" alt="d48851a2734e1072ec7e2bdb910be9d2" src="https://github.com/user-attachments/assets/67a1e0d0-cc0d-4b25-ab32-a5f851deb888" />
+<img width="1707" height="1280" alt="e21dfc4d81de1a77ddd88f1aa0a7562f" src="https://github.com/user-attachments/assets/cae3ad52-bff7-45d3-a28c-3c4a10a119c3" />
+<img width="1707" height="1280" alt="7ee49c200683c5948977602d8238356c" src="https://github.com/user-attachments/assets/210a18f6-5bcb-441d-ba99-c254e8e957e2" />
+<img width="1707" height="1280" alt="c0f08ae4ce37b8c5f034df3af37f1410" src="https://github.com/user-attachments/assets/766df564-1b00-47d4-a5ff-b7d88be36a98" />
+<img width="1707" height="1280" alt="538620884a194e38c4f02f0c375d693b" src="https://github.com/user-attachments/assets/6a1e74eb-a4dd-4ea8-a6f7-cc302efe2718" />
+
 
 <p float="left">
 <img src="piscreen_service_mac.jpg" height="300" />
@@ -194,6 +200,9 @@ Now you should be able to edit python scripts with Thonny on your Pi.
 Option 3. A nowadays often preferred method is to use Microsoft [VS code to remote connect to the Pi](https://www.raspberrypi.com/news/coding-on-raspberry-pi-remotely-with-visual-studio-code/). This gives you access to a fullly equipped and responsive code editor with terminal and file browser.  
 
 Pro Tip: Using tools like [code-server](https://coder.com/docs/code-server/latest) you can even setup a VS Code coding environment hosted on your raspberry pi and code through a web browser on your tablet or smartphone! 
+<img width="1702" height="1276" alt="466e6e8cb1d08dd49c8e15c973b612cc" src="https://github.com/user-attachments/assets/2d020593-8c44-4fb8-b5c0-f6d38d24438c" />
+<img width="2048" height="1280" alt="8a0787c65ad36f2b548376d7fd9b07ce" src="https://github.com/user-attachments/assets/5123c5f5-7ac2-4c74-993c-0cd2801fe90b" />
+
 
 ## Part E. Read Part 2. Sketch and brainstorm further interactions and features you would like for your clock.
 
@@ -204,7 +213,8 @@ Another might be novel units of time. How do you measure a year? [In daylights? 
 We strongly discourage literal digital or analog clock display: Be creative.
 
 
-** Insert ideas, sketches, [Verplank diagrams](https://ccrma.stanford.edu/courses/250a-fall-2004/IDSketchbok.pdf)), storyboards for your ideas **
+<img width="1728" height="1079" alt="ab94fd1c8b964601933d83186135d6f9" src="https://github.com/user-attachments/assets/767179e5-859a-4131-b435-8459d4bef831" />
+
 
 
 
