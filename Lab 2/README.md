@@ -248,7 +248,8 @@ After that, Git will ask you to login to your GitHub account to push the updates
 
 Do take advantage of having done the previous iteration to refine and simplify your design.
 
-** Insert any updates ideas, sketches, [Verplank diagrams](https://ccrma.stanford.edu/courses/250a-fall-2004/IDSketchbok.pdf))!, storyboards for your ideas **
+<img width="1536" height="1024" alt="final_stetch" src="https://github.com/user-attachments/assets/04eef42c-fa06-4d3a-83a6-c6ea51af73e0" />
+
 
 
 [plant_clock_light.py](plant_clock_light.py)
