@@ -227,7 +227,8 @@ We strongly discourage literal digital or analog clock display: Be creative.
 1. Pick up remaining parts for kit on Wednesday lab class. Check the updated [parts list inventory](partslist.md) and let the TA know if there is any part missing.
 
 2. Look at and give feedback on the Part E. for at least 3 other people in the class and get 3 people to comment on your Part E!)
-**Put the feedback for your ideas here.**
+
+**Group 1 ([Flappy Bird]([https://github.com/bydemihu](https://github.com/DanielXing373/Interactive-Lab-Hub/blob/Fall2026/Lab%202/README.md)))** — I really like the idea of connecting time with the growth of life, and also with temperature and like to produce a full cycle of life from seed to fruit. Maybe you could link fruit back to the seed to start another cycle, with animation or some illustration, so that the clock can run forever.
 
 ## Update your Lab Hub
 
@@ -237,11 +238,13 @@ We strongly discourage literal digital or analog clock display: Be creative.
 
 Start small, pick just one element of your overall idea, just to show you have a handle on the code and components.
 
-\*\*\***Put a copy of your code in your Lab 2 Github repo.**\*\*\*
+[plant_clock.py](plant_clock.py)
+
+[light_sensor_test.py](light_sensor_test.py)
 
 ## Make a short video of your modified barebones PiClock
 
-\*\*\***Take a video of your barely modified PiClock.**\*\*\*
+[Watch the modified PiClock demo](barely_modified_PiClock.mp4)
 
 After you edit and work on the scripts for Lab 2, the files should be upload back to your own GitHub repo! You can push to your personal github repo by adding the files here, commiting and pushing.
 
@@ -257,12 +260,13 @@ After that, Git will ask you to login to your GitHub account to push the updates
 
 Do take advantage of having done the previous iteration to refine and simplify your design.
 
-** Insert any updates ideas, sketches, [Verplank diagrams](https://ccrma.stanford.edu/courses/250a-fall-2004/IDSketchbok.pdf))!, storyboards for your ideas **
+<img width="1536" height="1024" alt="final_stetch" src="https://github.com/user-attachments/assets/04eef42c-fa06-4d3a-83a6-c6ea51af73e0" />
 
 
-\*\*\***Put a copy of your code in your Lab 2 Github repo.**\*\*\*
 
-\*\*\***Take a video of your PiClock.**\*\*\*
+[plant_clock_light.py](plant_clock_light.py)
+
+[Watch the final PiClock demo](final_PiClock.mp4)
 
 
 As always, make sure you document contributions and ideas from others (and AI) explicitly in your writeup.
