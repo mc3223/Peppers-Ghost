@@ -215,7 +215,7 @@ We strongly discourage literal digital or analog clock display: Be creative.
 1. Pick up remaining parts for kit on Wednesday lab class. Check the updated [parts list inventory](partslist.md) and let the TA know if there is any part missing.
 
 2. Look at and give feedback on the Part E. for at least 3 other people in the class and get 3 people to comment on your Part E!)
-3. 
+
 **Group 1 ([Flappy Bird]([https://github.com/bydemihu](https://github.com/DanielXing373/Interactive-Lab-Hub/blob/Fall2026/Lab%202/README.md)))** — I really like the idea of connecting time with the growth of life, and also with temperature and like to produce a full cycle of life from seed to fruit. Maybe you could link fruit back to the seed to start another cycle, with animation or some illustration, so that the clock can run forever.
 
 ## Update your Lab Hub
