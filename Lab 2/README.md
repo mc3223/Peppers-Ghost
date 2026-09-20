@@ -227,11 +227,12 @@ We strongly discourage literal digital or analog clock display: Be creative.
 Start small, pick just one element of your overall idea, just to show you have a handle on the code and components.
 
 [plant_clock.py](plant_clock.py)
+
 [light_sensor_test.py](light_sensor_test.py)
 
 ## Make a short video of your modified barebones PiClock
 
-\*\*\***Take a video of your barely modified PiClock.**\*\*\*
+[Watch the modified PiClock demo](barely_modified_PiClock.mp4)
 
 After you edit and work on the scripts for Lab 2, the files should be upload back to your own GitHub repo! You can push to your personal github repo by adding the files here, commiting and pushing.
 
@@ -250,9 +251,9 @@ Do take advantage of having done the previous iteration to refine and simplify y
 ** Insert any updates ideas, sketches, [Verplank diagrams](https://ccrma.stanford.edu/courses/250a-fall-2004/IDSketchbok.pdf))!, storyboards for your ideas **
 
 
-\*\*\***Put a copy of your code in your Lab 2 Github repo.**\*\*\*
+[plant_clock_light.py](plant_clock_light.py)
 
-\*\*\***Take a video of your PiClock.**\*\*\*
+[Watch the final PiClock demo](final_PiClock.mp4)
 
 
 As always, make sure you document contributions and ideas from others (and AI) explicitly in your writeup.
