@@ -215,7 +215,7 @@ We strongly discourage literal digital or analog clock display: Be creative.
 1. Pick up remaining parts for kit on Wednesday lab class. Check the updated [parts list inventory](partslist.md) and let the TA know if there is any part missing.
 
 2. Look at and give feedback on the Part E. for at least 3 other people in the class and get 3 people to comment on your Part E!)
-**Put the feedback for your ideas here.**
+**Group 1 ([Flappy Bird]([https://github.com/bydemihu](https://github.com/DanielXing373/Interactive-Lab-Hub/blob/Fall2026/Lab%202/README.md)))** — I really like the idea of connecting time with the growth of life, and also with temperature and like to produce a full cycle of life from seed to fruit. Maybe you could link fruit back to the seed to start another cycle, with animation or some illustration, so that the clock can run forever.
 
 ## Update your Lab Hub
 
@@ -225,7 +225,8 @@ We strongly discourage literal digital or analog clock display: Be creative.
 
 Start small, pick just one element of your overall idea, just to show you have a handle on the code and components.
 
-\*\*\***Put a copy of your code in your Lab 2 Github repo.**\*\*\*
+[plant_clock.py](plant_clock.py)
+[light_sensor_test.py](light_sensor_test.py)
 
 ## Make a short video of your modified barebones PiClock
 
