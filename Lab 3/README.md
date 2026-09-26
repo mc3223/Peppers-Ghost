@@ -1,8 +1,8 @@
 # Chatterboxes
 
-**NAMES OF COLLABORATORS HERE**
+Matthias Corkran, Xie Li
 
-[![Watch the video](https://user-images.githubusercontent.com/1128669/135009222-111fe522-e6ba-46ad-b6dc-d1633d21129c.png)](https://www.youtube.com/embed/Q8FWzLMobx0?start=19)
+[![Watch the video](https://user-images.githubusercontent.com/1128669/135009222-111fe522-e6ba-46ad-b6dc-d1633d21129c.png)](https://youtu.be/LZ0VJClIlRI?si=Yy84mcyVYuVV19mn)
 
 In this lab, we want you to design interaction with a speech-enabled device — something that listens and talks to you. This device can do anything *but* control lights (since we already did that in Lab 1). First, we want you to storyboard what you imagine the conversational interaction to be like. Then you will use wizarding techniques to elicit examples of what people might say, ask, or respond. We then want you to use the examples collected from at least two other people to inform the redesign of the device.
 
@@ -106,11 +106,9 @@ Note that the Piper command line changed in version 1.x — voices are now downl
 
 The demo script also shows `--output-raw`, which streams audio to the speaker as it is generated rather than writing a file first. Listen for the difference in how quickly speech begins. In a conversational system this gap is the thing your user experiences as responsiveness.
 
-\*\***Write your own shell file to use your favorite of these TTS engines to have your Pi greet you by name.**\*\*
-(This shell file should be saved to your own repo for this lab.)
+My personalized Piper greeting script: [greet.sh](https://github.com/xl2323-sudo/Interactive-Lab-Hub/blob/Fall2026/Lab%203/speech-scripts/greet.sh)
 
-\*\***Then answer: Is the same greeting, in these different voices, the same greeting? Describe one concrete way the voice changed what the utterance seemed to mean or who seemed to be speaking.**\*\*
-
+The words are the same, but the greeting feels different depending on the voice. eSpeak talked the fastest, Festival sounded the most robotic, and Piper sounded the most natural to me. For example, “Welcome back” in Festival felt like an automatic announcement, while in Piper it felt more like someone was actually welcoming me. That’s why I picked Piper for my greeting script.
 ## B. Speech to Text
 
 We use [faster-whisper](https://github.com/SYSTRAN/faster-whisper), a reimplementation of OpenAI's Whisper model that runs several times faster on CPU and does not require PyTorch. All processing happens on the Pi; nothing is sent to a server.
@@ -129,9 +127,15 @@ The transcript is not the interesting output here — the timings are. Run it ag
 
 Available sizes, smallest first: `tiny.en`, `base.en`, `small.en`, `medium.en`. The `.en` variants are English-only and faster than their multilingual counterparts at the same size.
 
-\*\***Record a few seconds of your own speech (`arecord -d 5 -f cd -c 1 -r 16000 test.wav`) and transcribe it with at least two model sizes. Report the real-time factor for each. At what point does the accuracy improvement stop being worth the delay, for a system that has to answer you?**\*\*
+<img width="1130" height="498" alt="73a7f2b22281e07433b70e38f3f189f0" src="https://github.com/user-attachments/assets/6267a299-65ec-4a1e-8f20-b5773bd79972" />
 
-\*\***Write your own script that verbally asks for a numerical input (a phone number, zipcode, number of pets) and records the answer the respondent provides.**\*\* Numbers are a good stress test — transcription systems make characteristic errors on digit strings, and you will want to know what they are before you design around them.
+I got a real-time factor of 0.23 with tiny.en and 0.43 with base.en. Base.en took almost twice as long without noticeably improving the result, so for this recording, I’d stick with tiny.en for a faster reply.
+
+<img width="1135" height="352" alt="image" src="https://github.com/user-attachments/assets/75521e32-6d21-411a-b563-96c8770f6b91" />
+
+My script asks how many pets the user has, records the answer, and transcribes it. I tested it with “Two,” which it recognized correctly.
+
+Script: [ask_number.sh](https://github.com/xl2323-sudo/Interactive-Lab-Hub/blob/Fall2026/Lab%203/speech-scripts/ask_number.sh)
 
 ## C. Turn-taking: knowing when someone has stopped talking
 
@@ -150,8 +154,9 @@ Speak, pause, and watch it transcribe. Now change the endpointing threshold — 
 (.venv) $ python listen.py --min-silence 0.2
 (.venv) $ python listen.py --min-silence 1.5
 ```
+<img width="1049" height="797" alt="edb6c5810ea1d5c0d1604365e946cb81" src="https://github.com/user-attachments/assets/581dc95a-954a-45be-8322-238cd514e8bd" />
 
-\*\***Try both extremes, and something in between. Describe what each one feels like to talk to. Note specifically: at 0.2s, what kinds of normal speech get cut off? At 1.5s, what does the delay make the system seem like?**\*\*
+At 0.2s, it felt impatient: pauses while thinking or correcting myself split my sentences. At 0.4s, it was more forgiving but still cut some sentences apart. At 1.5s, it felt slow to respond and even combined my dinner and weather sentences into one turn.
 
 There is no correct value. A system that takes drink orders and a system that listens to someone think out loud want very different thresholds, and the right one depends on what your users are doing with their pauses.
 
@@ -162,16 +167,21 @@ There is no correct value. A system that takes drink orders and a system that li
 ```
 (.venv) $ python echo_bot.py
 ```
+<img width="809" height="146" alt="7eea39d8dd943eb77701faad58de985f" src="https://github.com/user-attachments/assets/2cb081e6-32fa-4ade-9e29-85e3d362bfc1" />
+
+The bot heard me correctly and repeated my words. Processing took about 1.33 seconds, plus the 0.4-second pause used to detect that I had finished speaking.
 
 ## D. Storyboard
 
 Storyboard and/or use a Verplank diagram to design a speech-enabled device. (Stuck? Make a device that talks for dogs. If that is too stupid, find an application that is better than that.)
 
-\*\***Post your storyboard and diagram here.**\*\*
+<img width="1536" height="1024" alt="exec-1f8e6f4b-6fc2-428c-ab8e-3c0ffec35b82" src="https://github.com/user-attachments/assets/adca490a-0e04-4333-8927-f5928c6b04e5" />
+
+<img width="1536" height="1024" alt="exec-1a6390a9-bb66-4857-9f9a-32297839455b" src="https://github.com/user-attachments/assets/b8694d28-0b84-4c2e-b4ce-49eaa59239c8" />
 
 Write out what you imagine the dialogue to be. Use cards, post-its, or whatever method helps you develop alternatives or group responses.
 
-\*\***Please describe and document your process.**\*\*
+I started with a simple coffee order and broke it into drink, temperature, size, and confirmation. I included a change from medium to large to show why pauses matter. Then I used a storyboard and flowchart to map the interaction, choosing a 0.8-second silence threshold to allow short pauses.
 
 Your script should include the pauses. Where does your device wait, and for how long? You now know from Part C that this is a parameter you have to choose, not something that happens for free.
 
@@ -179,8 +189,7 @@ Your script should include the pauses. Where does your device wait, and for how 
 
 Find a partner, and *without sharing the script with your partner* try out the dialogue you've designed, where you (as the device designer) act as the device you are designing. Please record this interaction (for example, using Zoom's record feature).
 
-\*\***Describe if the dialogue seemed different than what you imagined when it was acted out, and how.**\*\*
-
+In this imagined role-play, the customer asked about prices before choosing a size. I hadn’t included that in my script, so the conversation took an extra turn. I would add a short price explanation to make ordering easier.
 
 ---
 

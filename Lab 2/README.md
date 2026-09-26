@@ -234,7 +234,6 @@ We strongly discourage literal digital or analog clock display: Be creative.
 
 **Group 3 ([Moments Counter]([https://github.com/Elliot-verified/Interactive-Lab-Hub/blob/Fall2026/Lab%202/README.md))** — Interesting idea, do you think you could add some sound to round out the experience a bit? More cowbell haha!!
 
-
 ## Update your Lab Hub
 
 [Update your Lab Hub](pull_updates/README.md) to get the latest content and requirements for Part 2.
