@@ -1,0 +1,11 @@
+# Same speech stack as Lab 3 Part 1, plus the Lab 2 display.
+# Install into Lab 3/.venv; existing satisfying versions are retained.
+numpy>=2,<3
+sounddevice>=0.5.2,<0.6
+faster-whisper>=1.2,<2
+sherpa-onnx>=1.12,<2
+piper-tts>=1.3,<2
+Adafruit-Blinka>=8.64,<9
+adafruit-circuitpython-rgb-display==3.14.1
+lgpio==0.2.2.0
+Pillow>=11.3,<13
