@@ -1,0 +1,15 @@
+{
+  "voice": "../voices/en_US-lessac-medium.onnx",
+  "vad_model": "../models/silero_vad.onnx",
+  "asr_model": "tiny.en",
+  "compute_type": "int8",
+  "input_device": null,
+  "output_device": null,
+  "min_silence": 0.8,
+  "min_speech": 0.15,
+  "reply_timeout": 5,
+  "max_utterance": 20,
+  "audio_settle": 0.25,
+  "save_audio": false,
+  "run_dir": "runs"
+}
