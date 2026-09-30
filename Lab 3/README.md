@@ -241,8 +241,6 @@ Code: [`coffee-order/`](coffee-order/) ([`coffee_order.py`](coffee-order/coffee_
 
 **Controller:** The controller is the two buttons next to the screen. After every answer, the wizard sees what Whisper heard and how the system interpreted it. The wizard presses A to accept or B to have the customer say it again. Nothing counts toward the order until A is pressed.
 
-**Video:** *TODO: add demo video*
-
 ## Test the system
 
 We tested with classmates (Rohil, Andi, Tony, Gabbi, Edmond, Jacey). Their notes:
