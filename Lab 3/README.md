@@ -215,39 +215,49 @@ The screen always shows what state the device is in, color-coded: **Listening** 
 
 ## Prototype your system
 
-The system should:
-* use the Raspberry Pi
-* use one or more sensors
-* require participants to speak to it
+Code: [`coffee-order/`](coffee-order/) ([`coffee_order.py`](coffee-order/coffee_order.py), run with `bash coffee-order/run_coffee.sh`; add `--simulate` to try it on a laptop without the Pi).
 
 *Document how the system works.*
+| Stage | What happens |
+|---|---|
+| Speak | Piper (`en_US-lessac-medium`) reads the prompt; screen shows **Speaking** |
+| Listen | Mic stream opens; Silero VAD waits for speech, ends the turn after 0.8 s of silence; screen shows **Listening** |
+| Transcribe | faster-whisper `tiny.en` turns the audio into text; screen shows **Processing** |
+| Interpret | Keyword rules map the transcript to one option for the current step (or flag it as unclear) |
+| Wizard check | Screen shows the transcript and the interpreted choice. **A** accepts, **B** makes the customer repeat |
+| Log | Every prompt, transcript, button press and timing is written to `runs/<timestamp>/events.jsonl` |
 
 *Include videos or screencaptures of both the system and the controller.*
 
+<img width="2048" height="1536" alt="image" src="https://github.com/user-attachments/assets/fc8e9c59-e163-4d6f-9fe5-5cbe13aafc15" />
+
+*The system mid-order. The screen shows **Processing**, and the laptop behind it streams the JSON event log.*
+
+<img width="4032" height="3024" alt="image" src="https://github.com/user-attachments/assets/4a38c2fb-4784-410a-920b-e8ee9fe6afa7" />
+
+*While the system asks the temperature question, the screen shows **Speaking** and the two valid answers, Hot and Iced.*
+
 ## Test the system
 
-Try to get at least two people to interact with your system. (Ideally, you would inform them that there is a wizard *after* the interaction, but we recognize that can be hard.)
+We tested with classmates (Rohil, Andi, Tony, Gabbi, Edmond, Jacey).
 
+- **Rohil & Andi:** match what it hears to one of the answer options, and have it *expect* those words while listening. Work on handling accents better so it doesn't only work for some voices.
+- **Tony:** not very sensitive, so you have to repeat yourself several times. The waits on the size and temperature steps are too long. Overall quite good.
+- **Gabbi, Edmond & Jacey:** it wasn't getting Gabbi's words right; the model needs more training.
 Answer the following:
 
 ### What worked well about the system and what didn't?
-\*\**your answer here*\*\*
+
+The status on the screen worked well. It was very easy to tell when the system was listening, and showing the options meant people knew what to say. What didn't work was the timing, which felt slow, especially on the short temperature and size steps. It also often misheard non-native English speakers, so they had to repeat themselves.
 
 ### What worked well about the controller and what didn't?
-\*\**your answer here*\*\*
+
+Showing the wizard both the raw transcript and the interpreted choice made it easy to catch mishearings before they got into the order. The switch to button selection after 3 failures meant an order could always be finished. The downside is that every turn waits on a button press. That adds to the slowness testers noticed, and it gets tiring when the recognizer keeps missing a speaker.
 
 ### What lessons can you take away from the WoZ interactions for designing a more autonomous version of the system?
-\*\**your answer here*\*\*
+
+Study real conversations more closely, especially timing and overlap. Short answers like "iced" or "large" don't need the same wait as an open-ended question, so the end-of-turn silence should depend on the step. Set expectations early in the conversation so people know what the device can handle. We already match transcripts to a fixed set of options, but that only helps if Whisper gets the word right. The next step is to give the recognizer the expected words while it listens (e.g. faster-whisper's `initial_prompt` / `hotwords`) and try a larger or multilingual model so it handles accents better. That would make the wizard's A/B check unnecessary for most turns.
 
 ### How could you use your system to create a dataset of interaction? What other sensing modalities would make sense to capture?
-\*\**your answer here*\*\*
 
-<details>
-  <summary><strong>Submission Cleanup Reminder (Click to Expand)</strong></summary>
-
-  **Before submitting your README.md:**
-  - This readme.md file has a lot of extra text for guidance.
-  - Remove all instructional text and example prompts from this file.
-  - You may either delete these sections or use the toggle/hide feature in VS Code to collapse them for a cleaner look.
-  - Your final submission should be neat, focused on your own work, and easy to read for grading.
-</details>
+The system already logs every turn: the prompt, the transcript, how it was interpreted, the wizard's A/B decision, and timings. With `--save-audio` it also saves each answer as a WAV. Every B press is a labeled example of a mishearing, which is exactly the data needed to improve recognition. A dataset like this could be useful for beginner language-learning apps, customer-service phone lines, or drive-thru ordering. For more modalities, a camera could watch lip movement and nods to tell when someone is about to speak or has finished, which would help with turn-taking and anticipating the conversation.
