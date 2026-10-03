@@ -200,9 +200,18 @@ For Part 2, you will redesign the interaction with the speech-enabled device usi
 ## Prep for Part 2
 
 1. What are concrete things that could use improvement in the design of your device? For example: wording, timing, anticipation of misunderstandings.
+
+- **Wording:** In the Part E role-play the customer asked about add-ons and price before picking a size, and the script had no answer for that. The prompts now list every valid option up front ("We have Latte, Cappuccino, and Mocha…"), and when someone asks about price, the system says prices aren't part of the prototype and repeats the question instead of getting stuck.
+- **Timing:** We kept the 0.8 s end-of-turn silence from the storyboard. If nobody speaks within 5 s, the system asks "Would you like more time?" instead of waiting forever. Answers longer than 20 s are rejected.
+- **Misunderstandings:** Answers are matched against the valid options for the current step. The system asks again when it hears more than one option ("hot or iced"), a negation ("not a large"), or more than one drink. An explicit correction ("medium, actually large") keeps the corrected choice. After 3 failed attempts it switches to picking with the buttons.
+
 2. What are other modes of interaction *beyond speech* that you might also use to clarify how to interact? In particular: how does someone know when the device is listening, and when it is thinking? You have a screen and an LED.
+
+The screen always shows what state the device is in, color-coded: **Listening** (green), **Processing** (yellow), **Speaking** (blue). It also lists the options you can say for the current step, so the user doesn't have to remember them. The mic is closed whenever the device is speaking, so the device never hears its own voice.
+
 3. Make a new storyboard, diagram and/or script based on these reflections.
-4. (optional) Integrate [input devices](inputs.md) in the system
+
+<img width="1536" height="1024" alt="image" src="https://github.com/user-attachments/assets/2191033b-ad50-44d3-9c4b-322f3eb7b4d3" />
 
 ## Prototype your system
 
