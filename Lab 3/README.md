@@ -227,6 +227,9 @@ Code: [`coffee-order/`](coffee-order/) ([`coffee_order.py`](coffee-order/coffee_
 | Wizard check | Screen shows the transcript and the interpreted choice. **A** accepts, **B** makes the customer repeat |
 | Log | Every prompt, transcript, button press and timing is written to `runs/<timestamp>/events.jsonl` |
 
+**Sensors / inputs:** USB webcam microphone (speech), the two miniPiTFT buttons (wizard controls, and manual selection as a fallback).
+**Outputs:** speaker (Piper TTS), 240×135 miniPiTFT (status + options + transcript).
+
 *Include videos or screencaptures of both the system and the controller.*
 
 <img width="2048" height="1536" alt="image" src="https://github.com/user-attachments/assets/fc8e9c59-e163-4d6f-9fe5-5cbe13aafc15" />
@@ -236,6 +239,8 @@ Code: [`coffee-order/`](coffee-order/) ([`coffee_order.py`](coffee-order/coffee_
 <img width="4032" height="3024" alt="image" src="https://github.com/user-attachments/assets/4a38c2fb-4784-410a-920b-e8ee9fe6afa7" />
 
 *While the system asks the temperature question, the screen shows **Speaking** and the two valid answers, Hot and Iced.*
+
+**Controller:** The controller is the two buttons next to the screen. After every answer, the wizard sees what Whisper heard and how the system interpreted it. The wizard presses A to accept or B to have the customer say it again. Nothing counts toward the order until A is pressed.
 
 ## Test the system
 
