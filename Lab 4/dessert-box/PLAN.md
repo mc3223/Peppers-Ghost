@@ -1,6 +1,6 @@
 # Hand-Crank Dessert Box: Setup Plan
 
-A music box for the Feast Automata theme. You turn the crank (rotary encoder) and a melody plays at the speed you crank. While it plays, the servo turns 3D-printed gears so a figure on top spins. When the song ends, the lid opens to reveal a treat. Press the crank knob to reset.
+A music box for the Feast Automata theme. You turn the crank (rotary encoder) and a melody plays at the speed you crank. While it plays, the servo turns 3D-printed gears so a figure on top spins. When the song ends, the lid opens to reveal a treat. Before cranking, the crank knob switches songs; after, it resets the box.
 
 The code is already written ([`dessert_box.py`](dessert_box.py)). This plan walks through the hardware, one piece at a time. Every step can be tested on its own, and the script skips anything that isn't plugged in yet.
 
@@ -16,6 +16,7 @@ The code is already written ([`dessert_box.py`](dessert_box.py)). This plan walk
 ```
 
 - **Crank → song.** Every `TICKS_PER_BEAT` encoder clicks is one beat. Crank faster and the song speeds up; stop and it pauses. Cranking backward does nothing, like a real music box.
+- **Songs.** [`songs.py`](songs.py) holds the melodies. Press the knob before cranking to switch between them.
 - **Song → servo.** The servo angle follows song progress: 0° at the start, 180° at the end. Gears turn that 180° into more rotation for the figure (see step 4).
 - **End → lid.** When the last note plays, the lid opens.
 
@@ -64,7 +65,7 @@ On your Mac (or the Pi), the simulate mode uses the keyboard as the crank:
 python dessert_box.py --simulate
 ```
 
-Hold any key to crank, `r` to reset, `q` to quit. You should hear the music-box notes. This is a good way to tune the song and `TICKS_PER_BEAT` before anything is built.
+Hold any key to crank, `r` to press the knob (switch songs / reset), `q` to quit. You should hear the music-box notes. This is a good way to tune the song and `TICKS_PER_BEAT` before anything is built.
 
 ## Step 3: Bring up each part
 
@@ -125,9 +126,8 @@ All the settings are at the top of [`dessert_box.py`](dessert_box.py):
 | `FIGURE_START` / `FIGURE_END` | Servo angle range over the song | Shrink if the servo buzzes or hits something at the ends |
 | `SERVO_PULSE_MS` | Pulse widths for 0° and 180° | If the servo only moves about 90° when it should move 180°, try `(0.5, 2.5)` |
 | `LID_CH`, `LID_CLOSED`, `LID_OPEN` | Lid servo channel and angles | Set to match your lid |
-| `SONG`, `SONG_NAME` | The melody, as `(note, beats)` | Any tune; notes like `"C5"`, `"F#5"`, `"Bb4"` |
 
-After changing the song, delete the `sounds/` folder so the new notes get generated.
+The songs themselves live in [`songs.py`](songs.py), as `(note, beats)` lists. The top of that file explains how to read note names, note lengths, rests, and key signatures off sheet music. **Le Festin** has an empty slot there, ready for its notes; until it has them, the box skips it.
 
 ## Step 7: Document for the lab
 

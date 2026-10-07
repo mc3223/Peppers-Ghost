@@ -2,7 +2,8 @@
 
 Turn the rotary encoder like a music-box crank. The melody plays at the speed
 you crank, the servo turns the geared figure as the song progresses, and when
-the song ends the lid opens. Press the encoder knob to reset.
+the song ends the lid opens. Before you start cranking, pressing the knob
+switches songs (see songs.py); after that, it resets the box.
 
 Every piece of hardware is optional: anything that isn't plugged in is skipped
 with a warning, so you can bring the box up one part at a time.
@@ -21,6 +22,8 @@ import subprocess
 import sys
 import time
 import wave
+
+from songs import SONGS
 
 # ---------------------------------------------------------------------------
 # Settings to tune once the mechanism is built (see PLAN.md, step 6)
@@ -43,16 +46,7 @@ SERVO_PULSE_MS = (1.0, 2.0)
 ENCODER_ADDR = 0x36
 OLED_SIZE = (128, 32)
 
-# Twinkle Twinkle Little Star as (note, beats). Swap in any melody here.
-SONG_NAME = "Twinkle Twinkle"
-SONG = [
-    ("C5", 1), ("C5", 1), ("G5", 1), ("G5", 1), ("A5", 1), ("A5", 1), ("G5", 2),
-    ("F5", 1), ("F5", 1), ("E5", 1), ("E5", 1), ("D5", 1), ("D5", 1), ("C5", 2),
-    ("G5", 1), ("G5", 1), ("F5", 1), ("F5", 1), ("E5", 1), ("E5", 1), ("D5", 2),
-    ("G5", 1), ("G5", 1), ("F5", 1), ("F5", 1), ("E5", 1), ("E5", 1), ("D5", 2),
-    ("C5", 1), ("C5", 1), ("G5", 1), ("G5", 1), ("A5", 1), ("A5", 1), ("G5", 2),
-    ("F5", 1), ("F5", 1), ("E5", 1), ("E5", 1), ("D5", 1), ("D5", 1), ("C5", 2),
-]
+# The melodies live in songs.py.
 
 SOUND_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "sounds")
 SAMPLE_RATE = 22050
@@ -64,15 +58,18 @@ SAMPLE_RATE = 22050
 NOTE_OFFSETS = {"C": 0, "D": 2, "E": 4, "F": 5, "G": 7, "A": 9, "B": 11}
 
 
-def note_freq(name):
-    """'C5' -> Hz. Supports sharps/flats like 'F#4' or 'Bb4'."""
+def note_midi(name, transpose=0):
+    """'C5' -> MIDI note number. Supports sharps/flats like 'F#4' or 'Bb4'."""
     semitone = NOTE_OFFSETS[name[0]]
-    rest = name[1:]
-    if rest.startswith("#"):
-        semitone, rest = semitone + 1, rest[1:]
-    elif rest.startswith("b"):
-        semitone, rest = semitone - 1, rest[1:]
-    midi = 12 * (int(rest) + 1) + semitone
+    octave = name[1:]
+    if octave.startswith("#"):
+        semitone, octave = semitone + 1, octave[1:]
+    elif octave.startswith("b"):
+        semitone, octave = semitone - 1, octave[1:]
+    return 12 * (int(octave) + 1) + semitone + transpose
+
+
+def midi_freq(midi):
     return 440.0 * 2 ** ((midi - 69) / 12)
 
 
@@ -94,25 +91,25 @@ def write_note_wav(path, freq, seconds=1.4):
 
 
 class Sound:
-    def __init__(self, notes):
+    def __init__(self, midis):
         self.player = shutil.which("aplay") or shutil.which("afplay")
         if not self.player:
             print("! No aplay/afplay found; notes will only be printed")
         os.makedirs(SOUND_DIR, exist_ok=True)
         self.paths = {}
-        for name in sorted(set(notes)):
-            path = os.path.join(SOUND_DIR, f"{name}.wav")
+        for midi in sorted(set(midis)):
+            path = os.path.join(SOUND_DIR, f"note{midi}.wav")
             if not os.path.exists(path):
-                write_note_wav(path, note_freq(name))
-            self.paths[name] = path
+                write_note_wav(path, midi_freq(midi))
+            self.paths[midi] = path
         self.procs = []
 
-    def play(self, name):
+    def play(self, name, midi):
         print(f"♪ {name}")
         if not self.player:
             return
-        args = [self.player, "-q", self.paths[name]] if self.player.endswith("aplay") \
-            else [self.player, self.paths[name]]
+        args = [self.player, "-q", self.paths[midi]] if self.player.endswith("aplay") \
+            else [self.player, self.paths[midi]]
         self.procs = [p for p in self.procs if p.poll() is None]
         self.procs.append(subprocess.Popen(args, stdout=subprocess.DEVNULL,
                                            stderr=subprocess.DEVNULL))
@@ -144,7 +141,7 @@ class EncoderCrank:
 
 
 class KeyboardCrank:
-    """Any key = one crank click, r = knob press (reset), q = quit."""
+    """Any key = one crank click, r = knob press, q = quit."""
 
     def __init__(self):
         import termios
@@ -152,7 +149,7 @@ class KeyboardCrank:
         self.fd = sys.stdin.fileno()
         self.saved = termios.tcgetattr(self.fd)
         tty.setcbreak(self.fd)
-        print("Simulate: hold any key to crank, r = reset, q = quit")
+        print("Simulate: hold any key to crank, r = knob press, q = quit")
 
     def read(self):
         delta, clicked = 0, False
@@ -262,13 +259,23 @@ def main():
                         help="use the keyboard as the crank; skip all Pi hardware")
     args = parser.parse_args()
 
-    onsets, beat = [], 0
-    for name, beats in SONG:
-        onsets.append((beat, name))
-        beat += beats
-    total_beats = beat
+    # Each playable song becomes (name, [(start beat, note name, midi)], total beats).
+    # Rests count toward the beats but have no note to play.
+    songs = []
+    for song in SONGS:
+        if not song["notes"]:
+            print(f"! Skipping {song['name']}: no notes yet (add them in songs.py)")
+            continue
+        onsets, beat = [], 0
+        for name, beats in song["notes"]:
+            if name != "rest":
+                onsets.append((beat, name, note_midi(name, song["transpose"])))
+            beat += beats
+        songs.append((song["name"], onsets, beat))
+    if not songs:
+        sys.exit("No songs with notes in songs.py")
 
-    sound = Sound([name for name, _ in SONG])
+    sound = Sound([midi for _, onsets, _ in songs for _, _, midi in onsets])
     servos = Servos(args.simulate)
     display = Display(args.simulate)
     if args.simulate:
@@ -285,27 +292,40 @@ def main():
         if LID_CH is not None:
             servos.ease(LID_CH, LID_CLOSED, 0.8)
         servos.ease(FIGURE_CH, FIGURE_START, 1.5)
-        display.show("Crank me!", 0)
         return 0, 0  # (ticks, index of next note)
 
+    def announce(song_name):
+        print(f"Song: {song_name}. Crank to play, press knob to switch songs.")
+        display.show(song_name, 0)
+
+    current = 0
+    song_name, onsets, total_beats = songs[current]
     ticks, next_note = reset()
+    announce(song_name)
     done = False
     try:
         while True:
             delta, clicked = crank.read()
             if clicked:
-                ticks, next_note = reset()
-                done = False
+                # Before cranking, the knob picks the song; after, it resets.
+                if ticks == 0:
+                    current = (current + 1) % len(songs)
+                    song_name, onsets, total_beats = songs[current]
+                else:
+                    ticks, next_note = reset()
+                    done = False
+                announce(song_name)
             # Like a real music box, cranking backwards does nothing.
             if delta > 0 and not done:
                 ticks += delta
                 pos = ticks / TICKS_PER_BEAT
                 while next_note < len(onsets) and onsets[next_note][0] <= pos:
-                    sound.play(onsets[next_note][1])
+                    _, name, midi = onsets[next_note]
+                    sound.play(name, midi)
                     next_note += 1
                 progress = min(1.0, pos / total_beats)
                 servos.move(FIGURE_CH, FIGURE_START + (FIGURE_END - FIGURE_START) * progress)
-                display.show(SONG_NAME, progress)
+                display.show(song_name, progress)
                 if pos >= total_beats:
                     done = True
                     print("Song finished: opening lid")
