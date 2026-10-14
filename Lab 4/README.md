@@ -295,9 +295,25 @@ As you develop your Feast Automata concept, consider where the sensor and actuat
 
 
 
-**\*\*\*What questions do these sketches raise? What do you need to physically prototype to answer them?\*\*\***
+1. How quickly should it open, and can the gears lift the lid smoothly?
 
-**\*\*\*Pick one design to prototype and explain why.\*\*\***
+Build a cardboard or other low-fidelity physical prototype of your design.A cardboard box with an upward-opening lid, gears, a motor, and a model dessert inside. Test the clearance and the opening speed alongside the music.
+
+2. How far should it retreat, and when should it come back? A lightweight bowl on a short sliding track.
+  
+First move it manually while someone reaches for candy, then add a distance sensor and servo to test the response.
+
+3. Do people lift their cups close enough together to trigger it?
+
+Two sensing coasters and a paper flower with movable petals. Test different timing windows and check whether the petals open reliably.
+
+4. Can the tray stop at the correct person? Does pressing a button feel natural when sharing snacks? 
+A small rotating tray with three request buttons and a motor. Test stopping positions, stability with snacks aboard, and how people use the buttons.
+
+5. Can the sensor distinguish slow and fast stirring? Does the dancer respond quickly enough to feel connected to the spoon?
+A spoon with a magnet, a sensor near the cup rim, and a cardboard puppet driven by a servo. Try different stirring speeds and observe the delay and movement.
+
+The musical dessert box was selected because it turns the process of serving a dessert into a small surprise. When the diner taps the box, music begins and the gears lift the lid upward to reveal the dessert. The music builds anticipation, while the moving lid makes the experience playful. This design also provides a manageable starting point as it has a clear trigger point and one main movement. This makes the prototyping procedure convenient and direct requiring only a simple cardboard version with gears, a motor, and a speaker to test whether the lid opens smoothly and whether the music matches the timing of the reveal.
 
 Build a cardboard or other low-fidelity physical prototype of your design.
 
