@@ -24,7 +24,7 @@ def runExample():
 					myJoystick.vertical, \
 					myJoystick.button))
 
-		time.sleep(.5)
+		time.sleep(.1)
 
 if __name__ == '__main__':
 	try:
