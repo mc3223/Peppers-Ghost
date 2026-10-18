@@ -521,4 +521,6 @@ We began developing our project prototype by creating a detailed 3D CAD model of
 
 Next, we converted the box components into 2D sketches for laser cutting, including the outlines and connecting tabs needed for assembly. We also 3D-printed the gears and incorporated them into the prototype. Finally, we integrated music and linked it with the gear movement, bringing the mechanical and audio elements together. This process allowed us to turn our digital design into a physical prototype that demonstrated the main idea of our project.
 
+**Project Code:** [dessert_box.py](dessert_box.py)
+
 https://github.com/user-attachments/assets/6e76caaa-34c8-492c-baad-efeed1b805a9
