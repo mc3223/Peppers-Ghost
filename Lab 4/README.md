@@ -515,21 +515,10 @@ This is a playful way to visualize how the expander works, but the same techniqu
 
 ### Final Documentation
 
-Document all the prototypes and iterations you have designed and worked on! Again, deliverables for this lab are writings, sketches, photos, and videos that show what your prototype:
-* "Looks like": shows how the device should look, feel, sit, weigh, etc.
-* "Works like": shows what the device can do
-* "Acts like": shows how a person would interact with the device
+We began developing our project prototype by creating a detailed 3D CAD model of the box, including the interlocking panels, top section, and external gear mechanism. This model helped us visualize the overall design and plan how the individual components would fit together.
 
----
+<img width="2558" height="1630" alt="image" src="https://github.com/user-attachments/assets/dc0eae00-b2ad-4c88-ae3a-187afebec768" />
 
-## Deliverables \& Submission for Lab 4
+Next, we converted the box components into 2D sketches for laser cutting, including the outlines and connecting tabs needed for assembly. We also 3D-printed the gears and incorporated them into the prototype. Finally, we integrated music and linked it with the gear movement, bringing the mechanical and audio elements together. This process allowed us to turn our digital design into a physical prototype that demonstrated the main idea of our project.
 
-The deliverables for this lab are, writings, sketches, photos, and videos that show what your prototype:
-* "Looks like": shows how the device should look, feel, sit, weigh, etc.
-* "Works like": shows what the device can do.
-* "Acts like": shows how a person would interact with the device.
-
-For submission, the readme.md page for this lab should be edited to include the work you have done:
-* Upload any materials that explain what you did, into your lab 4 repository, and link them in your lab 4 readme.md.
-* Link your Lab 4 readme.md in your main Interactive-Lab-Hub readme.md. 
-* Labs are due on Mondays, make sure to submit your Lab 4 readme.md to Canvas.
+https://github.com/user-attachments/assets/6e76caaa-34c8-492c-baad-efeed1b805a9
