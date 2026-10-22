@@ -14,7 +14,8 @@ How it works:
      it are skipped, since its edges look like dark spots.
   3. Spots are tracked by position. One that stays at least --persist minutes is a
      catch; one seen in two or more frames in a row that leaves sooner is a visit;
-     a single-frame spot is noise.
+     a single-frame spot is noise. Spots already there in the first two minutes
+     were floating at bedtime, and are reported as already_in_trap, not caught.
 
 Writes count_result.json (catches, visits, light) and count_result.jpg (the last
 frame with each catch circled and labelled with the time it arrived).
@@ -49,7 +50,11 @@ sat = cv2.cvtColor(ref, cv2.COLOR_BGR2HSV)[..., 1]
 liquid = cv2.morphologyEx((sat > 140).astype(np.uint8), cv2.MORPH_CLOSE, np.ones((25, 25), np.uint8))
 n, labels, stats, _ = cv2.connectedComponentsWithStats(liquid)
 biggest = 1 + np.argmax(stats[1:, cv2.CC_STAT_AREA])
-mask = cv2.erode((labels == biggest).astype(np.uint8), np.ones((11, 11), np.uint8))   # stay just off the rim; flies land near it
+# A fly already floating at the edge is not amber and would bite a notch out of the
+# liquid, hiding itself; the liquid is an oval, so fill out to its convex outline.
+contours, _ = cv2.findContours((labels == biggest).astype(np.uint8), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+mask = cv2.fillPoly(np.zeros_like(sat), [cv2.convexHull(max(contours, key=cv2.contourArea))], 1)
+mask = cv2.erode(mask, np.ones((11, 11), np.uint8))   # stay just off the rim; flies land near it
 
 kernel = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (25, 25))
 glare_ring = np.ones((61, 61), np.uint8)
@@ -89,8 +94,12 @@ daylight = next((r["t"] for i, r in enumerate(rows) if all(bright[i:i + hold])),
 
 # Daylight puts the window's reflection in the liquid, and its edges look like flies,
 # so anything that first appears after daylight is reported as unsure, not caught.
+# Spots there from the first couple of minutes were already floating at bedtime: not tonight's catch.
 persist = datetime.timedelta(minutes=args.persist)
+start_grace = rows[0]["t"] + datetime.timedelta(minutes=2)
 lasting = [k for k in tracks if k["last"] - k["first"] >= persist]
+already = [k for k in lasting if k["first"] <= start_grace]
+lasting = [k for k in lasting if k["first"] > start_grace]
 catches = [k for k in lasting if not daylight or k["first"] < daylight]
 unsure = [k for k in lasting if daylight and k["first"] >= daylight]
 visits = [k for k in tracks if k["last"] - k["first"] < persist and k["hits"] >= 2]
@@ -100,6 +109,7 @@ result = {
     "start": rows[0]["t"].isoformat(timespec="minutes"),
     "end": rows[-1]["t"].isoformat(timespec="minutes"),
     "frames": len(rows),
+    "already_in_trap": len(already),
     "caught": len(catches),
     "catches": [{"arrived": hhmm(k["first"]), "x": int(k["x"]), "y": int(k["y"])} for k in catches],
     "unsure_after_daylight": [{"appeared": hhmm(k["first"]), "x": int(k["x"]), "y": int(k["y"])} for k in unsure],
