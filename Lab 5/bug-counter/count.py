@@ -90,9 +90,12 @@ for r in rows[::args.step]:
 # Light: when was it dark (lamp off), when did daylight arrive?
 night = statistics.median(r["brightness"] for r in rows[:round(600 / step_s)])     # the lamp alone, at bedtime
 lamp_off = [r["t"] for r in rows if r["brightness"] < night * 0.5]
-bright = [r["brightness"] > night + 3 for r in rows]
-hold = round(600 / step_s)                                  # brighter for 10 minutes straight, not a blip
-daylight = next((r["t"] for i, r in enumerate(rows) if all(bright[i:i + hold])), None)
+# Dawn: the next 5 minutes are brighter on average. Clouds make dawn flicker, and a
+# lamp switched on for a moment is a blip, so neither single frames nor "bright
+# for 10 minutes straight" work.
+win = round(300 / step_s)
+daylight = next((r["t"] for i, r in enumerate(rows)
+                 if statistics.median(x["brightness"] for x in rows[i:i + win]) > night + 2), None)
 
 # Daylight puts the window's reflection in the liquid, and its edges look like flies,
 # so anything that first appears after daylight is reported as unsure, not caught.
