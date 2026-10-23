@@ -1,0 +1,27 @@
+{
+  "start": "2026-10-21T22:05",
+  "end": "2026-10-22T09:12",
+  "frames": 7806,
+  "already_in_trap": 0,
+  "caught": 1,
+  "catches": [
+    {
+      "arrived": "00:25",
+      "x": 734,
+      "y": 141
+    }
+  ],
+  "unsure_after_daylight": [
+    {
+      "appeared": "07:27",
+      "x": 636,
+      "y": 288
+    }
+  ],
+  "visits": 1,
+  "visit_times": [
+    "07:26"
+  ],
+  "lamp_off_minutes": 0,
+  "daylight_from": "07:02"
+}

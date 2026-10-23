@@ -1,0 +1,18 @@
+### Q1 qwen3.5:0.8b
+Roosevelt Island is a historic island in Manhattan, originally built as a military fortification during World War II to protect the harbor from German submarines. It was later converted into an art museum and now serves as a popular tourist destination featuring the famous "Roosevelt Island Ferry," which connects New York City with Queens.
+
+[qwen3.5:0.8b, 32.6 s]
+### Q1 qwen3:0.6b
+Roosevelt Island, located in the state of New York, was established in 1854 as a temporary refuge for the New York Immigration Board. It was a crucial location for immigrants seeking a stable home and became a significant hub for the community. Today, it remains a symbol of the resilience and diversity of the New York community.
+
+[qwen3:0.6b, 12.0 s]
+### Q2 image
+A man with reddish-brown hair and a black hoodie is making a peace sign against a white ceiling with recessed lights.
+
+[qwen3.5:0.8b, 119.5 s]
+### Q3
+1. Fruit flies have long, thin bodies with six legs, while house flies are rounder with eight legs.
+2. Fruit flies are attracted to sweet food like honey or nectar, whereas house flies seek out human waste for their larvae.
+3. Fruit flies are often found near fruit and flowers, but house flies prefer warm, dry areas like kitchens.
+
+[qwen3.5:0.8b, 14.4 s]

@@ -1,0 +1,24 @@
+10:21:10 1 person(s) at center/close
+10:21:26 1 person(s) at center/far
+10:21:26 1 person(s) at center/close
+10:21:28 1 person(s) at left/close
+10:21:28 1 person(s) at center/close
+10:21:33 2 person(s) at center/close, center/close
+10:21:34 1 person(s) at center/close
+10:21:35 2 person(s) at center/close, left/far
+10:21:35 1 person(s) at center/close
+10:21:40 1 person(s) at left/far
+10:21:41 1 person(s) at center/far
+10:21:42 nobody
+10:21:42 1 person(s) at center/far
+10:21:43 nobody
+10:21:44 1 person(s) at center/far
+10:21:47 1 person(s) at center/close
+10:21:53 1 person(s) at left/close
+10:21:54 1 person(s) at center/close
+10:21:55 1 person(s) at center/far
+10:21:56 1 person(s) at center/close
+10:21:56 nobody
+10:21:58 1 person(s) at center/close
+10:21:59 1 person(s) at right/close
+10:22:03 nobody
