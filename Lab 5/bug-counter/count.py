@@ -7,7 +7,7 @@ caught in the trap.
     python count.py --persist 20       # a spot must stay 20 min to count as caught
 
 How it works:
-  1. The liquid is the saturated (amber) part of the first frame; everything else is ignored.
+  1. The liquid is the yellowest part of the first frame; everything else is ignored.
   2. In each frame, a black-hat filter finds small spots darker than their surroundings.
      It compares each pixel with its neighbourhood, so dawn brightening the whole dish
      does not look like a fly. Bright glare (the lamp's reflection) and a ring around
@@ -44,16 +44,18 @@ step_s = statistics.median((b["t"] - a["t"]).total_seconds() for a, b in zip(row
 # A track may miss a few looks: a fly that just landed struggles and blurs in and out.
 max_gap = max(datetime.timedelta(seconds=step_s * args.step * 3), datetime.timedelta(minutes=3))
 
-# 1. The liquid mask, from the first frame.
+# 1. The liquid mask, from the first frame: the vinegar is yellower than the dish (Lab b*).
+#    Colour balance and the lamp change from night to night, so Otsu picks the cutoff.
 ref = cv2.imread(rows[0]["frame"])
-sat = cv2.cvtColor(ref, cv2.COLOR_BGR2HSV)[..., 1]
-liquid = cv2.morphologyEx((sat > 140).astype(np.uint8), cv2.MORPH_CLOSE, np.ones((25, 25), np.uint8))
+yellow = cv2.GaussianBlur(cv2.cvtColor(ref, cv2.COLOR_BGR2LAB)[..., 2], (15, 15), 0)
+_, liquid = cv2.threshold(yellow, 0, 1, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
+liquid = cv2.morphologyEx(liquid, cv2.MORPH_OPEN, np.ones((15, 15), np.uint8))
 n, labels, stats, _ = cv2.connectedComponentsWithStats(liquid)
 biggest = 1 + np.argmax(stats[1:, cv2.CC_STAT_AREA])
 # A fly already floating at the edge is not amber and would bite a notch out of the
 # liquid, hiding itself; the liquid is an oval, so fill out to its convex outline.
 contours, _ = cv2.findContours((labels == biggest).astype(np.uint8), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
-mask = cv2.fillPoly(np.zeros_like(sat), [cv2.convexHull(max(contours, key=cv2.contourArea))], 1)
+mask = cv2.fillPoly(np.zeros_like(yellow), [cv2.convexHull(max(contours, key=cv2.contourArea))], 1)
 mask = cv2.erode(mask, np.ones((11, 11), np.uint8))   # stay just off the rim; flies land near it
 
 kernel = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (25, 25))
@@ -86,7 +88,7 @@ for r in rows[::args.step]:
             tracks.append({"x": x, "y": y, "first": r["t"], "last": r["t"], "hits": 1})
 
 # Light: when was it dark (lamp off), when did daylight arrive?
-night = statistics.median(r["brightness"] for r in rows)
+night = statistics.median(r["brightness"] for r in rows[:round(600 / step_s)])     # the lamp alone, at bedtime
 lamp_off = [r["t"] for r in rows if r["brightness"] < night * 0.5]
 bright = [r["brightness"] > night + 3 for r in rows]
 hold = round(600 / step_s)                                  # brighter for 10 minutes straight, not a blip
