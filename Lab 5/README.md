@@ -140,100 +140,104 @@ My Part 2 counter does the first one: a dark spot only counts as a fly once it h
 
 ---
 
-# Lab 5 Part 2: Overnight Sensation
+# Lab 5 Part 2: Overnight Sensation — the Fly Trap Night Shift
 
-For Part 2, you will use the observant system from Part 1 to design a night-time interaction. On-device AI is slow, so let it work while you sleep. The person meets the device twice: **before bed**, when they hand the night over, and **when awake**, when the device gives something back. In between, the pipeline from Part E runs on its own.
+There are fruit flies in my kitchen. The device is a vinegar trap with a camera over it: I hand it the night before bed, it watches the trap while I sleep, and in the morning it tells me how many flies it caught and when.
 
-Two flavors, pick one or mix them:
+* **Sense all night:** a webcam looks straight down at a shallow white dish of apple cider vinegar and dish soap under a lamp that stays on, one frame every 5 seconds.
+* **Process in the morning:** [`count.py`](bug-counter/count.py) goes through the ~7,000 frames and finds flies that landed and stayed, and Qwen turns the count into a short report.
 
-* **Sense all night.** The Pi watches, listens or measures from bedtime until morning and keeps a log.
-* **Process all night.** You already have the data (a day of phone photos, a long recording) and the Pi needs hours to get through it.
+Code is in [`bug-counter/`](bug-counter/): [`bedtime.py`](bug-counter/bedtime.py) (hand-off), [`capture.py`](bug-counter/capture.py) (night shift), [`count.py`](bug-counter/count.py) (detector + interpreter), [`report.py`](bug-counter/report.py) (reasoner + reveal).
 
-Two house rules. Sample rather than stream: one look every 5 to 30 seconds is plenty, and it keeps the Pi cool. And keep everything on the Pi: tell the people you live with, point the camera at things rather than at beds, and delete the snapshots after the demo.
+## Part F. Storyboard
 
-## Part F. 
-### Read Part 2 and storyboard your night-time interaction
+> **TODO (Max): storyboard image here.** Three panels:
+> 1. **Before bed:** standing at the counter, holding a "quiet spider" (open hand, fingers spread like legs) over the trap. The Pi's green light blinks three times and goes dark.
+> 2. **While asleep:** dark apartment, one lamp on over the dish, the camera looking down; a fruit fly lands on the vinegar at 00:25.
+> 3. **When awake:** coffee in hand, reading "Caught 1 fly last night, at 12:25am."
 
-Storyboard a night-time interaction built on your observant system, in three panels:
+**Why a fly trap:** the question has a real answer I can check by looking in the dish in the morning, so I can tell when the device is wrong. It also keeps the camera pointed at a bowl, not at people.
 
-1. **Before bed.** How does the person hand the night over, and how does the device acknowledge it?
-2. **While asleep.** What does the device watch or work through?
-3. **When awake.** What is the one thing the person learns, and in what medium?
-
-Stuck? A kitchen that tells you who raided the fridge. A desk that reports whether you actually went to bed. A window that names the quietest hour. A plant that describes its night. Find something better.
-
-Use storyboards and/or [Verplank diagrams](https://ccrma.stanford.edu/courses/250a-fall-2004/IDSketchbok.pdf).
-
-\*\*\***Insert ideas, sketches, Verplank diagrams and storyboards for your night-time interaction here.**\*\*\*
+**Bellotti et al.'s five questions:**
+* **Address:** how do I tell it to start? A quiet spider held over the trap, the one thing the top-down camera can see.
+* **Attention:** how do I know it's listening? The green LED blinks three times, then goes dark: it's asleep and watching.
+* **Action:** what does it do? It takes a frame every 5 seconds all night; it never acts on the room.
+* **Alignment:** how do I know it did the right thing? The morning report gives the count and times, and I can look in the dish. The annotated image circles each fly with the time it arrived.
+* **Accident:** what if it's wrong? The counter is designed to under-claim: it only counts a spot that stays 10 minutes, it reports anything that appears after dawn as "unsure" rather than a catch, it separates flies already floating at bedtime, and it says if the lamp went off.
 
 ## Prep for Part 2
 
-1. Look at and give feedback on the Part F storyboards.
-   **Put the feedback for your ideas here.**
-2. [Update your Lab Hub](prep.md#get-the-latest-content) to get the latest content for Part 2.
-3. Decide where the device will spend the night and who else lives there. Get their OK before the first run.
-4. Revise your storyboard with the feedback and with what you learned in Part E about where the pipeline breaks.
+> **TODO (Max): feedback from classmates on the storyboard.**
 
-\*\*\***Post your revised storyboard here.**\*\*\*
+**Where it spends the night:** the kitchen counter. The camera only sees the dish.
 
-## Part G. 
-### Design the interaction before
+**What changed after the pilot nights and Part E:** see the iterations under Part H. The big one: everything that went wrong was a reflection that shifted (the lamp at first, the window at dawn), the same flicker problem as Part E's "14 people".
 
-The hand-off: the person tells the device what to watch tonight, and the device acknowledges it. Keep it to a thirty-second ritual. A button or a touch (Lab 4), a spoken sentence (Lab 3), a wave or a Quiet Coyote at the camera (Part C). The acknowledgement can be a line on the display, a tone, or an LED that dims rather than lights up. At its simplest, the hand-off just sets the question that the morning will answer.
+> **TODO (Max): revised storyboard, if the feedback changes it.**
 
-\*\*\***Describe the interaction before.**\*\*\*
+## Part G. The interaction before: the quiet spider
 
-## Part H. 
-### Incorporate the observant system
+Before bed I refresh the trap (fresh vinegar, a drop of soap, skim out anything floating) and hold a **quiet spider** over it: an open hand, all five fingers straight and spread wide, like a spider over its web. [`bedtime.py`](bug-counter/bedtime.py) watches for it with MediaPipe, from above:
 
-The Part E pipeline becomes the night shift. `overnight.py` runs your `interpret()` from `yolo_to_qwen.py` every few seconds, people only unless you pass `--all`, and writes the readings to `night_log.jsonl`; the reasoning waits for the morning. Start it inside `tmux` so it keeps running after you close your laptop, and stop it with Ctrl-C in the morning:
+* A rule over the 21 hand landmarks: every finger straight (tip farther from the wrist than its middle joint), the thumb out, and every pair of neighbouring fingertips spread apart, all scaled by the size of the palm so it works at any height.
+* It has to be held for 1.5 seconds. That's Part E's lesson: one frame is a flicker, not a decision.
+* **Acknowledgement:** the Pi's green LED blinks three times slowly and then stays dark for the night, an LED that dims rather than lights up.
+* It then waits until no hand has been in view for 30 seconds before the first frame, so my hand (and the ripples) are never in the start-of-night reference the counter compares against.
 
+Quiet Coyote from Part C was the starting point; a spider fits a fly trap, and an open hand is easy to see from directly above.
+
+> **TODO (Max): short video of the hand-off.**
+
+## Part H. The night shift
+
+[`capture.py`](bug-counter/capture.py) takes a 1280×720 frame every 5 seconds and logs each frame's brightness to `capture_log.jsonl`. It runs in `tmux`; the frames stay on the Pi and are not committed.
+
+**Two real nights:**
+
+| | Night 1 (Oct 21–22) | Night 2 (Oct 22–23) |
+|---|---|---|
+| Recorded | 22:05 – 09:12, 7,806 frames, no gaps | 23:15 – 09:26, 7,152 frames |
+| Counter says | **1 caught, arrived 00:25** | **0 caught** |
+| In the dish in the morning | 1 fruit fly | none |
+| Result | <img src="bug-counter/results/night1/count_result.jpg" width="320"> | <img src="bug-counter/results/night2/count_result.jpg" width="320"> |
+
+Logs and counts: [night 1](bug-counter/results/night1/), [night 2](bug-counter/results/night2/).
+
+Night 1's fly landed at the edge of the liquid at 00:25, struggled for a few minutes, sat there for about four hours, then drifted to where I found it between 04:20 and 05:20.
+
+**How the counter works and how it got there.** Each fix came from checking the counter against what was actually in the frames and the dish:
+
+1. **Find the liquid** in the first frame, so nothing on the dish counts. First by saturation (amber), then switched to **yellowness (Lab b\*)** after night 2: fresh vinegar was much paler and the lamp made the white dish look peachy, so "most saturated" picked the dish.
+2. **Find dark spots** with a black-hat filter, which compares each pixel to its neighbourhood, so dawn brightening the whole dish isn't a fly. Bright glare and a ring around it are skipped.
+3. **Track spots over time:** a spot that stays 10+ minutes is a catch.
+   * The first version said the fly arrived at 00:31, not 00:25: it was ignoring a band along the rim, where the fly landed, and a struggling fly broke its track. Narrower rim margin + tracks that follow a spot further fixed it.
+   * Spots already there in the first two minutes are reported as **already in the trap**, not caught.
+4. **Daylight:** once the window starts reflecting in the liquid, its edges look like flies. Night 1 got a fake "catch" at 07:24 and night 2 got **four** between 07:10 and 07:34. Anything that appears after dawn is now "unsure", not caught. Dawn detection also needed two tries: "brighter for 10 minutes straight" missed a cloudy dawn that flickered, so it's now "the next 5 minutes are brighter on average than at bedtime".
+
+**Still not handled:** I haven't verified the brief "visits" (spots that come and go). Night 2 has 13 before dawn; they could be flies touching down or camera noise, so the morning report leaves them out. And two nights with one fly is not much data.
+
+> **TODO (Max): photo/video of the setup in the kitchen at night (camera over the dish, lamp).**
+
+## Part I. The interaction after: the morning report
+
+[`report.py`](bug-counter/report.py) runs the counter, then hands Qwen **only the finished numbers** and asks for three sentences. Part D showed the model invents facts and Part E showed it turns a jittery log into "14 people", so it never decides whether there was a fly. The facts line is printed above the report so the two can be compared, and a night with no catches gets a plain sentence without asking the model at all.
+
+**Night 2 (quiet night, no model):**
 ```
-(.venv) pi@raspberrypi:~/Interactive-Lab-Hub/Lab 5 $ tmux new -s night
-(.venv) pi@raspberrypi:~/Interactive-Lab-Hub/Lab 5 $ python overnight.py
+Watched 23:15-09:26. Caught 0. Already in the trap at bedtime: 0. Lamp off: 0 min. Daylight from 07:04.
+
+Quiet night: the trap watched from 23:15 to 09:26 and caught no flies.
 ```
 
-Fake a night first: run it for thirty seconds while you walk around, stop it, and run `morning.py` from Part I. When that looks right, run a real night. If your storyboard needs a sensor rather than the camera, swap in the Lab 4 example code and log its reading the same way.
-
-\*\*\***Screenshots or videos of the running system.**\*\*\*
-
-## Part I. 
-### Design the interaction after
-
-The reveal. The night produced a log; the morning turns it into something a half-awake person can take in. `morning.py` is the smallest version: it asks Qwen for a three-sentence report.
-
-```
-(.venv) pi@raspberrypi:~/Interactive-Lab-Hub/Lab 5 $ python morning.py
-```
-
-Make it yours: show the report on the Mini PiTFT, read it aloud with Piper from Lab 3, plot the night as a timeline, or ask for JSON (`--json`, Part D) and move a servo. Whatever you pick, make sure it is honest about a night in which nothing happened.
+**Night 1:**
+> **TODO (Max): on the Pi, `cd bug-counter/night1 && ../../.venv/bin/python ../report.py`, and paste the output.**
 
 ## Final documentation
 
-Document all the prototypes and iterations you have designed and worked on. The deliverables for this lab are writings, sketches, photos, and videos that show what your system:
+* **Looks like:** > **TODO (Max): photos/video of the setup.**
+* **Works like:** frame every 5 s → liquid mask + dark-spot detector → tracker (catch / visit / already there / unsure) → `count_result.json` → Qwen → three sentences. Two real nights above.
+* **Acts like:** quiet spider and a blinking LED before bed; a count you can check against the dish in the morning.
 
-* "Looks like": how the device sits in the room at night, and what it looks like at bedtime and in the morning.
-* "Works like": the pipeline from detector to interpreter to log to reasoner, with a real night's data.
-* "Acts like": how a person hands the night over and what they get back.
+> **TODO (Max): link a short video of the whole system** (YouTube/Drive link is fine).
 
-\*\*\***Include a short video of the whole system**\*\*\*
-
-As always, make sure you document contributions and ideas from others (and AI) explicitly in your writeup.
-
-You are permitted (but not required) to work in groups and share a turn in; you are expected to make equal contribution on any group work you do, and N people's group project should look like N times the work of a single person's lab. Make sure the page for the group turn in is linked to your personal Interactive Lab Hub page.
-
-## Deliverables & Submission for Lab 5
-
-For submission, the readme.md page for this lab should be edited to include the work you have done:
-* Upload any materials that explain what you did, including your code and night log, into your Lab 5 repository, and link them in your Lab 5 readme.md.
-* Labs are due on Sundays, make sure to submit your Lab 5 readme.md to Canvas.
-
-<details>
-  <summary><strong>Submission Cleanup Reminder (Click to Expand)</strong></summary>
-
-  **Before submitting your README.md:**
-  - This readme.md file has a lot of extra text for guidance.
-  - Remove all instructional text and example prompts from this file.
-  - You may either delete these sections or use the toggle/hide feature in VS Code to collapse them for a cleaner look.
-  - Your final submission should be neat, focused on your own work, and easy to read for grading.
-</details>
+Privacy: the camera only sees the dish, and the night frames stay on the Pi and get deleted after the demo.
