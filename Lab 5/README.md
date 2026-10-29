@@ -216,7 +216,7 @@ Night 1's fly landed at the edge of the liquid at 00:25, struggled for a few min
 
 **Still not handled:** I haven't verified the brief "visits" (spots that come and go). Night 2 has 13 before dawn; they could be flies touching down or camera noise, so the morning report leaves them out. And two nights with one fly is not much data.
 
-> **TODO (Max): photo/video of the setup in the kitchen at night (camera over the dish, lamp).**
+[Setup video](media/setup.mp4): the bowl on the table, the webcam clipped to a plant pot looking straight down at it, the Pi beside it, and a quiet spider over the trap at the end.
 
 ## Part I. The interaction after: the morning report
 
@@ -234,7 +234,7 @@ Quiet night: the trap watched from 23:15 to 09:26 and caught no flies.
 
 ## Final documentation
 
-* **Looks like:** > **TODO (Max): photos/video of the setup.**
+* **Looks like:** [setup video](media/setup.mp4), and the trap from the camera's view in the Part H table.
 * **Works like:** frame every 5 s → liquid mask + dark-spot detector → tracker (catch / visit / already there / unsure) → `count_result.json` → Qwen → three sentences. Two real nights above.
 * **Acts like:** quiet spider and a blinking LED before bed; a count you can check against the dish in the morning.
 
