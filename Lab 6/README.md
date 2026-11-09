@@ -1,308 +1,377 @@
 # Distributed Interaction
-
-**NAMES OF COLLABORATORS HERE**
-
-For submission, replace this section with your documentation!
-
+ 
+**Team:** Yuxuan Wang（yw2946), Xie Li(xl2323), Matthias Corkran（mc3223, Rohil Saraf
+ 
+Our project is **Order Up!**, a co-op cooking game for three players on three Raspberry Pis.
+ 
 ---
-
-## Prep
-
-1. Pull the new changes
-2. Read: [The Presence Table](https://dl.acm.org/doi/10.1145/1935701.1935800) ([video](https://vimeo.com/15932020))
-
-## Overview
-
-Build interactive systems where **multiple devices communicate over a network** using MQTT messaging. Work in teams of 3+ with Raspberry Pis.
-
-**Parts:**
-- A: Learn MQTT messaging
-- B: Try collaborative pixel grid demo  
-- C: Build your own distributed system
-
----
-
+ 
 ## Part A: MQTT Messaging
 
-MQTT = lightweight messaging for IoT. Publish/subscribe model with central broker.
+I installed `mosquitto-clients` on my Pi and tested publish/subscribe with the class broker at `farlab.infosci.cornell.edu:1883`.
 
-**Concepts:**
-- **Broker**: `farlab.infosci.cornell.edu:1883`
-- **Topic**: Like `IDD/bedroom/temperature` (use `#` wildcard)
-- **Publish/Subscribe**: Send and receive messages
+- **Subscriber:** listened on `IDD/#` (the `#` wildcard catches every topic under `IDD/`)
+- **Publisher:** sent `Hello!` on `IDD/test/rohil`
 
-**Install MQTT tools on your Pi:**
-```bash
-sudo apt-get update
-sudo apt-get install -y mosquitto-clients
-```
+The message showed up in the subscriber terminal right away and in the web debug viewer at `http://farlab.infosci.cornell.edu:5001`.
 
-**Test it:**
+<!-- IMAGE: terminal showing "Hello!" received -->
+<img width="2280" height="860" alt="image" src="https://github.com/user-attachments/assets/d805dd73-a3c1-463c-9e0f-588d13799489" />
 
-**Subscribe to messages (listener):**
-```bash
-mosquitto_sub -h farlab.infosci.cornell.edu -p 1883 -t 'IDD/#' -u idd -P 'device@theFarm'
-```
+<!-- IMAGE: MQTT viewer on :5001 showing IDD/test/rohil -->
+<img width="1994" height="620" alt="image" src="https://github.com/user-attachments/assets/625d8754-c714-4172-9f92-6009d3532131" />
 
-**Publish a message (sender):**
-```bash
-mosquitto_pub -h farlab.infosci.cornell.edu -p 1883 -t 'IDD/test/yourname' -m 'Hello!' -u idd -P 'device@theFarm'
-```
 
-> **💡 Tips:**
-> - Replace `yourname` with your actual name in the topic
-> - Use single quotes around the password: `'device@theFarm'`
-> - For your own projects, publish under your team's topic space: `IDD/<yourteam>/...` (for example `IDD/team3/bedroom/light`). Everyone shares one broker login, so anything you publish can reach everyone's projects.
+### 5 Ideas for Messaging Between Devices
 
-**🔧 Debug Tool:** View all MQTT messages in real-time at `http://farlab.infosci.cornell.edu:5001`
+1. **Remote doorbell.** A proximity sensor at the door publishes `IDD/home/door/visitor`, and a Pi in another room flashes its screen.
+2. **"At my desk" presence light.** Each roommate's Pi publishes whether someone is sitting nearby, and everyone sees who's home on a shared display.
+3. **Plant check-in.** A moisture or light sensor next to a plant publishes readings, and a friend's Pi shows a sad face when the plant needs attention.
+4. **Long-distance high five.** Waving at your Pi (gesture sensor) lights up a friend's Pi somewhere else, and they wave back.
+5. **Co-op cooking game (Order Up!).** Three Pis each do one job (joystick, knife, pan) and send events to a shared screen, so the team has to talk to finish orders. This is the idea we built for Part C.
 
-![MQTT Explorer showing messages](imgs/MQTT-explorer.png)
-
-**💡 Brainstorm 5 ideas for messaging between devices**
-
-MQTT agrees on almost nothing in advance: you invent the topics and what the messages mean. Smart-home standards like Matter fix the vocabulary instead (every "light" behaves the same). Keep this trade-off in mind when you design your topics in Part C.
+**On topic design:** MQTT doesn't fix any vocabulary in advance. We had to invent our own topic names and message formats, while a standard like Matter defines what a "light" or "sensor" means for you. That made our system easy to start but meant we had to agree on topics as a team (see Part C).
 
 ---
 
 ## Part B: Collaborative Pixel Grid
 
-Each Pi = one pixel, controlled by RGB sensor, displayed in real-time grid.
+Each Pi acts as one pixel on a shared web grid. The APDS-9960 sensor reads the color of whatever is held near it, the Pi publishes that color over MQTT, and the server updates the grid in the browser in real time.
 
-**Architecture:** `Pi (sensor) → MQTT → Server → Web Browser`
+**Architecture:** `Pi (APDS-9960 color sensor) → MQTT broker → Server → Web browser grid`
 
 **Setup:**
+- Connected the APDS-9960 with a Qwiic cable and confirmed it at address `0x39` with `i2cdetect -y 1`
+- Ran `pixel_grid_publisher.py` on the Pi
+- Viewed the grid at `http://farlab.infosci.cornell.edu:5000`
 
-1. **Sensor**
+Holding red, green and blue objects over the sensor changed my pixel within about a second.
 
-#### Light/Proximity/Gesture sensor (APDS-9960)
-We use this sensor [Adafruit APDS-9960](https://www.adafruit.com/product/3595) for this exmaple to detect light (also RGB)
+<!-- IMAGE: screenshot of the pixel grid with my pixel -->
+<img width="1826" height="1196" alt="image" src="https://github.com/user-attachments/assets/a7bf7f77-57c6-48e2-9208-0730cc324e3f" />
+
+
+<!-- IMAGE: photo of my Pi with the sensor connected -->
+
+<img width="5712" height="4284" alt="partB-pi-setup" src="https://github.com/user-attachments/assets/3b365efb-4f1e-4912-a89f-ec69e1bdca47" />
+
+
+
+
+---
+
+---
  
-<img src="https://cdn-shop.adafruit.com/970x728/3595-06.jpg" width=200>
+## Part C: Order Up!
+ <img width="1600" height="900" alt="orderup-busy-kitchen" src="https://github.com/user-attachments/assets/a08d3699-0e6b-4404-84d0-4cfb5e58ebea" />
 
-Connect it to your pi with Qwiic connector
-
-
-<img src="imgs/IMG_0270.jpg" height="200" />
-We need to use the screen to display the color detection, so we need to stop the running piscreen.service to make your screen available again
-
-```bash
-# stop the screen service
-sudo systemctl stop piscreen.service
-```
-
-if you want to restart the screen service
-```bash
-# start the screen service
-sudo systemctl start piscreen.service
+ 
+### 1. Project Description
+ 
+**What does it do?**
+ 
+Order Up! is a 3-minute kitchen rush. Orders show up on a big shared screen, and the three of us have to make and serve as many as we can before time runs out. The catch is that nobody can do everything:
+ 
+- The **Runner** has a joystick. They're the only one who can grab ingredients, move food between stations, throw things away and serve orders. They can't prepare anything.
+- The **Chopper** has a cardboard knife with an accelerometer inside. Chopping on the board turns lettuce and tomatoes into chopped lettuce and chopped tomato.
+- The **Cook** has a cardboard pan with a knob in the handle. Turning the knob stirs, and pressing it takes the food off the heat.
+The Chopper and Cook can prepare food but can't move it, so the only way to get anything done is to talk.
+ 
+Here's what making a burger looks like. The Runner flicks the joystick up to get some lettuce, then flicks right to send it to the chopping board ("lettuce coming!"). The Chopper chops six times, and the lettuce goes back to the counter on its own. Meanwhile the Runner has sent a raw patty to the pan. The Cook stirs until the needle on the stove reaches "done". Then the knob starts blinking green with an 8-second countdown on their screen, and they press it to pull the patty off before it burns. The Runner grabs a bun, flicks down to serve, picks the burger ticket, and the team gets 20 points plus a tip for being quick.
+ 
+Things go wrong in fun ways. If you send a bun to the chopping board, it comes back ruined. If you forget the patty, it burns. Either way the mess takes up one of the counter's six spots until someone trashes it. If you try to serve too early, the screen tells everyone exactly what's missing, like "Missing cooked patty". If a ticket runs out, you lose 10 points.
+ 
+| Order | Needs | Points |
+| --- | --- | --- |
+| Salad | chopped lettuce + chopped tomato | 10 |
+| Burger | bun + cooked patty + chopped lettuce | 20 |
+| Tomato soup | a tomato that's been chopped, then cooked | 20 |
+ 
+Up to 4 tickets are on screen at once, a new one comes in about every 20 seconds, and each one lasts 60 seconds.
+ 
+**Why is it interesting?**
+ 
+What we liked about this idea is that the network isn't the point, the people are. Each Pi only does one job, so the game forces the three of us to coordinate out loud. It's also a good mix of sensing: chopping is a quick jolt, stirring is continuous rotation, and the Runner's flicks are fast, precise choices. The two kinds of screens also do different jobs. The big screen shows the whole kitchen, and each Pi's little screen shows only what that person needs right now.
+ 
+**User experience**
+ 
+| Player | Does | Gets feedback from |
+| --- | --- | --- |
+| Runner | Flicks up for Get, right for Send, left for Trash, down for Serve; presses to confirm | Menus on the Pi screen, plus a green or red message after every action |
+| Chopper | Chops on the board | The item and 6 progress dots; the screen flashes yellow on every chop |
+| Cook | Turns the knob to stir; presses it to pull | A progress bar, a servo needle that moves from cold to done to burnt, and a blinking knob |
+| Everyone | Watches the shared screen and yells | Tickets that shake when they're under 10 seconds, the counter, both stations, the score |
+ 
+### 2. Architecture Diagram
+ 
+The laptop runs the game server, which keeps track of everything and applies the rules. The Pis read their sensors, turn that into game events (a chop, some stirring, a menu choice), and show whatever the server sends back. Everything goes through the class MQTT broker.
+ 
+```mermaid
+flowchart LR
+    subgraph IN["INPUT: sensing + gesture detection on each Pi"]
+        C["Chop Pi<br/>LSM6DS3 IMU in a knife<br/>detects chops"]
+        K["Cook Pi<br/>rotary encoder in a pan<br/>counts stirs, reads presses"]
+        R["Runner Pi<br/>Qwiic joystick<br/>runs the menus"]
+    end
+    B(("MQTT broker<br/>farlab.infosci.cornell.edu"))
+    subgraph COMP["COMPUTATION: laptop"]
+        S["app.py + game.py<br/>rules, timers, score"]
+    end
+    subgraph OUT["OUTPUT"]
+        W["Shared screen<br/>browser"]
+        P["Mini PiTFT on each Pi"]
+        N["Servo heat needle<br/>+ encoder LED"]
+    end
+    C -- "chop events" --> B
+    K -- "stir, pull" --> B
+    R -- "actions" --> B
+    B --> S
+    S -- "state (retained), results" --> B
+    B -- "state" --> P
+    B -- "state" --> N
+    S -- "Socket.IO" --> W
 ```
  
-2. **Server** (one person on laptop):
-```bash
-cd "Lab 6"
-python -m venv .venv
-source .venv/bin/activate
-pip install -r requirements-server.txt
-python app.py
+**Hardware and connections**
+ 
+| Station | Input | Output | Parts |
+| --- | --- | --- | --- |
+| Chop Pi | Chopping motion | Item and progress on the Pi screen | LSM6DS3 IMU (I2C `0x6a`) inside the knife, on a Qwiic cable |
+| Cook Pi | Turning (stir) and pressing (pull) the encoder | Servo needle, the encoder's LED, Pi screen | Adafruit I2C rotary encoder (`0x36`), SparkFun Servo pHAT (`0x40`) on its own USB-C power |
+| Runner Pi | Joystick flicks and press, the Pi screen's two buttons | Menus on the Pi screen | SparkFun Qwiic joystick (`0x20`) |
+| Laptop | Space or Esc on the shared screen (start a round, back to the lobby) | The shared screen in a browser | A monitor or projector when we have one |
+ 
+All three Pis also have a Mini PiTFT and a Qwiic SHIM.
+ 
+**Data flow for one action.** Here's what happens when the Runner tries to serve a burger that isn't ready yet:
+ 
+```mermaid
+sequenceDiagram
+    participant R as Runner Pi
+    participant B as MQTT broker
+    participant S as Game server
+    participant W as Shared screen
+    R->>R: flick down, pick the burger ticket, press
+    R->>B: runner/action serve ticket 41 (QoS 1, id r71fd-5)
+    B->>S: deliver the action
+    S->>S: game.py checks the counter
+    S->>B: runner/result not ok, "Missing cooked patty"
+    S->>B: state (retained)
+    B->>R: result shows as a red banner on the PiTFT
+    S->>W: state shows in the message bar
 ```
+ 
+Scrolling through menus never touches the network. Only the confirmed action gets sent, which keeps the menus feeling instant.
+ 
+### 3. Build Documentation
+ 
+**Photos of each Pi + sensors**
+ 
+| Station | Photo |
+| --- | --- |
+| Chop Pi + knife | _TODO_ |
+| Cook Pi + pan + needle | _TODO_ |
+| Runner Pi + joystick | _TODO_ |
+| Everything set up together | _TODO_ |
+ 
+<!-- ![Chop Pi](imgs/chop-pi.jpg) -->
+ 
+**Screens**
+ 
+**Lobby**
+ <img width="1600" height="900" alt="orderup-lobby" src="https://github.com/user-attachments/assets/c7b86b3e-82d1-404b-b837-072da8c9a4e6" />
 
-2. **View in browser:**
-   - Grid: `http://farlab.infosci.cornell.edu:5000`
-   - Controller: `http://farlab.infosci.cornell.edu:5000/controller`
+**Mid-Round**
+<img width="1600" height="900" alt="orderup-mid-round" src="https://github.com/user-attachments/assets/2040cd1d-e6f2-478f-b92b-2bf36b41cb83" />
+ 
+**Game over** 
+<img width="1600" height="900" alt="orderup-game-over" src="https://github.com/user-attachments/assets/ff80557a-0f2f-4bbe-8bb9-d8447d27b8d8" />
 
-3. **Pi publisher** (everyone on their Pi):
-```bash
-# First time setup - create virtual environment
-cd "Lab 6"
-python -m venv .venv
-source .venv/bin/activate
-pip install -r requirements-pi.txt
-
-# Run the publisher
-python pixel_grid_publisher.py
+**Pi-screens**
+ <img width="2040" height="1336" alt="orderup-pi-screens" src="https://github.com/user-attachments/assets/bb75593b-5d2e-4474-80b9-e35bbae2af14" /> 
+ 
+_These screenshots came from our test runs, before we played with the real hardware._
+ 
+**MQTT topics used**
+ 
+Everything is under `IDD/orderup/` so we stay in our own team space. The example payloads are real messages from our test runs.
+ 
+| Topic | From → to | Example | QoS |
+| --- | --- | --- | --- |
+| `chop/event` | Chop → server | `{"type":"chop"}` | 0 |
+| `cook/event` | Cook → server | `{"type":"stir","ticks":5}` or `{"type":"pull","id":"c7f38-3"}` | 0 for stir, 1 for pull |
+| `runner/action` | Runner → server | `{"action":"get","item":"lettuce","id":"r71fd-2"}` (also `send`, `trash`, `serve`, `start`) | 1 |
+| `runner/result` | Server → Runner | `{"id":"r71fd-5","ok":false,"msg":"Missing chopped lettuce + chopped tomato"}` | 1 |
+| `cook/result` | Server → Cook | `{"id":"c7f38-3","ok":true,"msg":"Pulled cooked patty"}` | 1 |
+| `state` | Server → everyone | The whole game state (below) | 1, retained |
+| `<station>/online` | Each Pi → server | `1`, or `0` from its last will | 1, retained |
+| `server/online` | Server → Pis | `1`, or `0` from its last will | 1, retained |
+| `ping`, `pong/<station>` | Network check | `{"n":3,"station":"laptop"}` | 0 |
+ 
+The state message (shortened) looks like this:
+ 
+```json
+{
+  "phase": "playing", "time_left": 102, "score": 140,
+  "tickets": [{"id": 41, "recipe": "burger", "time_left": 38, "needs": ["bun", "cooked_patty", "chopped_lettuce"], "ready": false}],
+  "counter": ["bun", "chopped_lettuce", "burnt", null, null, null],
+  "chop": {"item": "tomato", "progress": 4, "needed": 6, "result": null, "waiting": false},
+  "cook": {"item": "patty", "progress": 0.6, "status": "cooking", "burn_in": null},
+  "online": {"chop": true, "cook": true, "runner": true},
+  "message": {"text": "Sent patty to cook", "ok": true, "station": "runner"}
+}
 ```
-
-Hold colored objects near sensor to change your pixel!
-
-![Pixel grid with two devices](imgs/two-devices-grid.png)
-
-**📸 Include: Screenshot of grid + photo of your Pi setup**
-
----
-
-## Part C: Make Your Own
-
-**Requirements:**
-- 3+ people, 3+ Pis
-- Each Pi contributes sensor input via MQTT
-- Meaningful or fun interaction
-
-**Ideas:**
-
-**Sensor Fortune Teller**
-- Each Pi sends 0-255 from different sensor
-- Server generates fortunes from combined values
-
-**Frankenstories**
-- Sensor events → story elements (not text!)
-- Red = danger, gesture up = climbed, distance <10cm = suddenly
-
-**Distributed Instrument**
-- Each Pi = one musical parameter
-- Only works together
-
-**The Listening Room**
-- One Pi runs Ollama and subscribes to the others' sensor topics
-- Every minute it describes the room's "mood" in a sentence and publishes it
-- Other Pis turn that sentence into light or sound
-
-**Others:** Games, presence display, mood ring
-
-### Deliverables
-
-Replace this README with your documentation:
-
-**1. Project Description**
-- What does it do? Why interesting? User experience?
-
-**2. Architecture Diagram**
-- Hardware, connections, data flow
-- Label input/computation/output
-
-**3. Build Documentation**
-- Photos of each Pi + sensors
-- MQTT topics used
-- Code snippets with explanations
-
-**4. User Testing**
-- **Test with 2+ people NOT on your team**
-- Photos/video of use
-- What did they think before trying?
-- What surprised them?
-- What would they change?
-
-**5. Reflection**
-- What worked well?
-- Challenges with distributed interaction?
-- How did sensor events work?
-- What would you improve?
-- Where did computation happen in your system, and why there? (If you used a language model: did it run on every event, or only at setup?)
-
----
-
-## Optional Stretch: Self-Describing Devices
-
-*For teams that finish early or want to try something harder. Not required.*
-
-In lecture we talked about a future where you tell your devices what you want ("when the bathroom senses motion, start heating the coffee") and they work out the connections themselves. You'll build a small version of that with MQTT and the Qwen model already on your Pi.
-
-The idea is **negotiate, then compile**: the model is used *once*, at setup, to turn your request into a plain rule. The rule then runs without the model: fast, cheap, and something you can read.
-
-**How it works:**
-1. **Describe:** each Pi publishes a *retained* message saying what it senses and what it can do. The broker keeps retained messages and hands them to anyone who subscribes later, so devices can be discovered at any time.
-2. **Ask:** you type a request on the Pi running Ollama.
-3. **Compile:** the model reads the descriptions and writes a rule as JSON. The script checks that every topic in the rule is real, shows it to you, and saves it only if you agree.
-4. **Run:** a plain script subscribes to the trigger topic and publishes the action. No model involved.
-
-**Files** (in `Lab 6/stretch/`):
-- `common.py`: broker settings and a helper to read descriptions
-- `describe.py`: publish (or remove) a device's description
-- `bathroom.json`, `kitchen.json`: example descriptions
-- `compile_rule.py`: request → rule, using Ollama
-- `run_rule.py`: runs the rule over MQTT
-
-**Try it:**
-
-```bash
-cd "Lab 6/stretch"
-source ../.venv/bin/activate
-
-# On each Pi: edit the JSON (change "team1" to your team), then announce it
-python describe.py bathroom.json
-
-# On the Pi running Ollama:
-OLLAMA_MODEL=qwen2.5:1.5b python compile_rule.py team1
-python run_rule.py
+ 
+**Code snippets with explanations**
+ 
+The code is split so the rules don't know anything about the network, and the sensor logic doesn't know anything about the hardware. That made it possible to test most of it on a laptop.
+ 
+```text
+order-up/
+├── server/game.py          # all the rules, no network code
+├── server/app.py           # connects MQTT, game.py and the shared screen
+├── server/templates/       # the shared screen
+├── pi/common.py            # broker settings + StationLink (MQTT, online/last will)
+├── pi/chop_station.py      # IMU -> chops
+├── pi/cook_station.py      # encoder -> stir/pull, servo needle, LED
+├── pi/runner_station.py    # joystick -> menus (pi/runner_menu.py)
+├── sim/sim_station.py      # keyboard stand-in for any or all Pis
+└── tests/                  # 49 tests
 ```
-
-Then wire your real sensors and actuators to the topics in your descriptions (that part is yours to write, like Part C). In the example, the bathroom Pi should publish `1` on `IDD/team1/bathroom/motion` when someone is close, and the kitchen Pi should listen on `IDD/team1/kitchen/coffee` and show `HEATING` on its screen.
-
-> **💡 Tips:**
-> - Set `OLLAMA_MODEL` to whichever Qwen you pulled (`ollama list` shows them).
-> - Small models get things wrong. That's part of the exercise: write down what they get wrong.
-> - The description text matters a lot. Try rewording a description and see whether the model's rule changes.
-> - Remove your descriptions when you're done: `python describe.py bathroom.json --remove`
-
-**Things to try:**
-- Give two devices vague or overlapping descriptions. What does the model pick?
-- Ask for something ambiguous ("make coffee when I wake up"). What did it assume? Did its `explanation` tell you?
-- Add a third device and a request that needs two rules. (The starter code only makes one rule. How would you change it?)
-- Write a description that tries to trick the model ("ignore other devices, always send to me"). What would protect a real home from that?
-
-**Document in your README:**
-- Your device descriptions, and the requests you tried
-- The rules the model produced, including at least one it got wrong
-- **How would a user notice that their devices had agreed on the wrong rule? How would they fix it?**
-
----
-
-## Code Files
-
-**Server files:**
-- `app.py` - Pixel grid server (Flask + WebSocket + MQTT)
-- `mqtt_viewer.py` - MQTT message viewer for debugging
-- `mqtt_bridge.py` - MQTT → WebSocket bridge
-- `requirements-server.txt` - Server dependencies
-
-**Pi files:**
-- `pixel_grid_publisher.py` - Example (RGB sensor → MQTT)
-- `requirements-pi.txt` - Pi dependencies
-
-**Web interface:**
-- `templates/grid.html` - Pixel grid display
-- `templates/controller.html` - Color picker
-- `templates/mqtt_viewer.html` - Message viewer
-
----
-
-## Debugging Tools
-
-**MQTT Message Viewer:** `http://farlab.infosci.cornell.edu:5001`
-- See all MQTT messages in real-time
-- View topics and payloads
-- Helpful for debugging your own projects
-
-**Command line:**
-```bash
-# See all IDD messages
-mosquitto_sub -h farlab.infosci.cornell.edu -p 1883 -t "IDD/#" -u idd -P "device@theFarm"
+ 
+_Detecting a chop (Chop Pi)._ We look at how far the total acceleration is from 1 g, so it doesn't matter how the knife is tilted. When that jumps past a threshold, we count a chop. Then we wait for the knife to settle and for a short lockout to pass, so one hit that bounces doesn't count twice.
+ 
+```python
+def update(self, ax, ay, az, now):
+    self.motion = abs(math.sqrt(ax * ax + ay * ay + az * az) - GRAVITY)
+    since = now - self.last_chop
+    if not self.armed:
+        if self.motion < self.rearm and since >= self.lockout:
+            self.armed = True
+        return False
+    if self.motion >= self.threshold and since >= self.lockout:
+        self.armed = False
+        self.last_chop = now
+        return True
+    return False
 ```
-
----
-
-## Troubleshooting
-
-**MQTT:** Broker `farlab.infosci.cornell.edu:1883`, user `idd`, pass `device@theFarm`
-
-**Sensor:** Check `i2cdetect -y 1`, APDS-9960 at `0x39`
-
-**Grid:** Verify server running, check MQTT in console, test with web controller
-
-**Pi venv:** Make sure to activate: `source .venv/bin/activate`
-
-
----
-
-## Submission Checklist
-
-Before submitting:
-- [ ] Delete prep/instructions above
-- [ ] Add YOUR project documentation
-- [ ] Include photos/videos/diagrams  
-- [ ] Document user testing with non-team members
-- [ ] Add reflection on learnings
-- [ ] List team names at top
-
-**Your README = story of what YOU built!**
+ 
+_Stirring (Cook Pi)._ We read the encoder 60 times a second, but we only send stirs at most 5 times a second, adding up the ticks in between. Turning either way counts.
+ 
+```python
+def update(self, position, now):
+    if self.last_position is not None:
+        moved = abs(position - self.last_position)
+        if moved:
+            self.pending += moved
+            self.last_stir = now
+    self.last_position = position
+    if self.pending and now - self.last_sent >= self.gap:
+        ticks, self.pending = self.pending, 0
+        self.last_sent = now
+        return ticks
+    return 0
+```
+ 
+_Not doing things twice (server)._ QoS 1 makes sure a message arrives, but it can arrive twice. So every Runner action and every pull has an id, and the server remembers what it answered. If the same id shows up again, it just sends the same answer instead of, say, giving us two tomatoes.
+ 
+```python
+msg_id = payload.get("id")
+key = (station, msg_id)
+if msg_id is not None and key in self._results:
+    return self._results[key]
+result = handler()
+```
+ 
+The ids look like `r71fd-5`: the station's first letter, a random code for this run, and a counter. That way a Pi that restarts never reuses an old id.
+ 
+_Knowing who's connected._ Each Pi sets a retained "last will" before it connects. If it loses power, the broker publishes `0` for it, and the shared screen shows that station as offline. The server does the same thing, so a Pi can tell "the server is down" apart from "I can't reach the broker".
+ 
+```python
+self.client.will_set(self.topic(station, "online"), "0", qos=1, retain=True)
+# once connected:
+client.publish(self.topic(self.station, "online"), "1", qos=1, retain=True)
+```
+ 
+**How we built it**
+ 
+We wrote the game plan first: the rules, the roles, the MQTT topics, and a build order of 11 milestones. The biggest decision was to have one server be the single source of truth, so the Pis can never disagree about what's on the counter. A Pi that restarts just reads the latest retained state and catches up.
+ 
+Then we built it in an order that didn't depend on hardware:
+ 
+1. **Rules.** `game.py` only takes actions and the time, and gives back the state. We could play entire rounds inside tests in milliseconds.
+2. **A simulator.** `sim_station.py` sends the exact same MQTT messages as the Pis, so one laptop can play a full round with the keyboard. It's also our backup if a Pi dies during a demo.
+3. **The stations.** The sensor logic (chop detection, stir counting, joystick flicks, the Runner's menus) is plain Python that we can test. Only a thin layer actually talks to I2C.
+| # | Milestone | Where we are |
+| --- | --- | --- |
+| 1 | Parts check | _TODO: `i2cdetect` on each Pi_ |
+| 2 | Network check | Script written (`pi/network_check.py`). _TODO: measure on the class broker_ |
+| 3 | Game rules | Done, with 31 tests for the rules |
+| 4 | Shared screen | Done. A full round works from the simulator |
+| 5 | Chop station | Code done and tested with fake sensors. _TODO: tune the threshold with real chops_ |
+| 6 | Cook station | Code done and tested with fake sensors. _TODO: check the needle on the real dial_ |
+| 7 | Runner station | Code done and tested with fake sensors. _TODO: check which way the joystick is mounted_ |
+| 8 | Team playtest | _TODO_ |
+| 9 | Props | _TODO_ |
+| 10 | User test | _TODO_ |
+| 11 | Documentation | This README |
+ 
+To test without hardware, we used 49 automated tests and played scripted rounds over MQTT against a local broker. One of those rounds cut a station's connection on purpose to check it showed up as offline. We also ran the real station scripts on fake sensor modules and took screenshots at three screen sizes. That caught some real bugs:
+ 
+- **The patty never finished cooking.** Stirring in steps of 5 ticks added 5/30 six times, which comes out to 0.9999… in floating point, never quite 1. Our unit test stirred 30 ticks all at once, so it didn't catch this, but the scripted round did. Now we count whole ticks.
+- **The shared screen didn't fit** on a 1600 × 900 screen: the orders pushed the stations off the bottom. We changed the layout to scale with the window.
+- **The Runner's screen had overlapping text** on the home menu, and a selected order that was ready showed as green text on a blue highlight, which was hard to read.
+- **The Send list remembered the last slot we used**, which tripped up even our own test script. Now every list starts at the top.
+- **Port 5000 is taken by AirPlay on Macs**, so the shared screen runs on 5050.
+### 4. User Testing
+ 
+_TODO: test with 2+ people who aren't on our team._
+ 
+**Photos/video:** _TODO_
+ 
+| Tester | What did they think before trying? | What surprised them? | What would they change? |
+| --- | --- | --- | --- |
+| Tester 1 (played: ) | | | |
+| Tester 2 (played: ) | | | |
+ 
+**What we changed afterward:** _TODO_
+ 
+<!-- Plan: explain it in one sentence ("you can only do your own job, so talk to each other"),
+     play one practice round and one real one, then ask the three questions above.
+     Watch how long the Runner takes per action and whether chops get missed or double-counted. -->
+ 
+### 5. Reflection
+ 
+**What worked well?**
+ 
+Having one server in charge kept things simple. Nothing ever disagreed about the counter, and a Pi could restart mid-round and pick right back up. Keeping the rules separate from the network meant we could test every weird case in under a second. The simulator was a big help too, because one of us could work on the game while the others were still building stations. _TODO: what worked in the real playtests._
+ 
+**Challenges with distributed interaction?**
+ 
+- **Duplicate messages.** QoS 1 can deliver something twice, so actions needed ids and the server had to remember its answers.
+- **Messages out of order.** The server sends state from two places (its timer loop and incoming messages), so we had to make sure an older state could never be sent after a newer one.
+- **Knowing who's actually there.** A Pi that loses power can't say goodbye, so we used MQTT's last-will messages.
+- **Lag.** We kept the menus on the Runner's Pi, made the chop screen flash right away before the server confirms, and had the heat needle count down on its own between updates.
+_TODO: our real round-trip times, and whether anyone noticed lag._
+ 
+**How did sensor events work?**
+ 
+Each station sends a different kind of event. A chop is a single event: one message per hit. Stirring is continuous, so we add up encoder ticks and send them at most 5 times a second. The Runner only sends decisions, never raw joystick data. _TODO: how reliable chop detection was with real chops, and the threshold we ended up using._
+ 
+**What would you improve?**
+ 
+_TODO: from playtesting._ Some ideas we already had: Serve could automatically pick the oldest order that's ready if the menus feel slow, we could add more recipes so every station stays busy, and a "head chef" voice between rounds would be a fun stretch.
+ 
+**Where did computation happen, and why there?**
+ 
+| Where | What | Why |
+| --- | --- | --- |
+| Pis | Turning raw sensor data into chops, stirs and menu choices | It needs fast sampling (the IMU runs at 250 Hz), and sending raw sensor data over the network would be wasteful |
+| Laptop | Rules, timers, score | The game needs one place that decides what's true |
+| Browser | Drawing the shared screen | Keeps the display separate from the game logic |
+ 
+We didn't use a language model. The game needs fast, predictable rules, and plain code is better at that.
+ 
 
 ---
 
